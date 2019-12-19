@@ -102,21 +102,21 @@
 ;; The Colors (I want to change this for a real theme, there are maaaaany)
 
 (defconst my/colors '((black . "#000000")
-        (red . "#cd0000")
-        (green . "#00cd00")
-        (yellow . "#cdcd00")
-        (blue . "#0000ee")
-        (magenta . "#cd00cd")
-        (cyan . "#00cdcd")
-        (white . "#e5e5e5")
-        (brightblack . "#444444") ;;
-        (brightred . "#ff0000")
-        (brightgreen . "#00ff00")
-        (brightyellow . "#ffff00")
-        (brightblue . "#5c5cff")
-        (brightmagenta . "#ff00ff")
-        (brightcyan . "#00ffff")
-        (brightwhite . "#ffffff"))
+		      (red . "#cd0000")
+		      (green . "#00cd00")
+		      (yellow . "#cdcd00")
+		      (blue . "#0000ee")
+		      (magenta . "#cd00cd")
+		      (cyan . "#00cdcd")
+		      (white . "#e5e5e5")
+		      (brightblack . "#444444") ;;
+		      (brightred . "#ff0000")
+		      (brightgreen . "#00ff00")
+		      (brightyellow . "#ffff00")
+		      (brightblue . "#5c5cff")
+		      (brightmagenta . "#ff00ff")
+		      (brightcyan . "#00ffff")
+		      (brightwhite . "#ffffff"))
   "List of colors.")
 
 (defun my/colors () "Define my color theme."
@@ -145,32 +145,32 @@
 
        ;; search C-s, resalta lo que encuentra
        (set-face-attribute 'isearch nil :background (cdr (assq 'blue my/colors))
-      :foreground (cdr (assq 'white my/colors)) :weight 'ultrabold) ;; Search
+			   :foreground (cdr (assq 'white my/colors)) :weight 'ultrabold) ;; Search
 
        (set-face-attribute 'lazy-highlight nil :background (cdr (assq 'brightblue my/colors)))
 
        (set-face-attribute 'region nil :background (cdr (assq 'brightblue my/colors)))          ;; Seleccion
 
        (set-face-attribute 'mode-line-inactive nil :background (cdr (assq 'brightblack my/colors))
-      :foreground (cdr (assq 'white my/colors)))
+			   :foreground (cdr (assq 'white my/colors)))
 
        (set-face-attribute 'mode-line nil :background (cdr (assq 'blue my/colors))
-      :foreground (cdr (assq 'white my/colors)))
+			   :foreground (cdr (assq 'white my/colors)))
 
        (set-face-attribute 'line-number nil :foreground (cdr (assq 'brightblack my/colors)))       ;; numero de linea
        (set-face-attribute 'line-number-current-line nil :foreground (cdr (assq 'green my/colors)))  ;; resalta la linea actual
        (set-face-attribute 'fill-column-indicator nil :foreground (cdr (assq 'brightblack my/colors)))
 
        (set-face-attribute 'tab-bar nil
-      :background (cdr (assq 'black my/colors)) :foreground (cdr (assq 'white my/colors))
-      :inverse-video nil)
+			   :background (cdr (assq 'black my/colors)) :foreground (cdr (assq 'white my/colors))
+			   :inverse-video nil)
 
        (set-face-attribute 'tab-bar-tab nil
-      :weight 'ultra-bold :underline t)
+			   :weight 'ultra-bold :underline t)
 
        (set-face-attribute 'tab-bar-tab-inactive nil
-      :background (cdr (assq 'black my/colors)) :foreground (cdr (assq 'brightwhite my/colors))
-      :weight 'normal :underline nil)
+			   :background (cdr (assq 'black my/colors)) :foreground (cdr (assq 'brightwhite my/colors))
+			   :weight 'normal :underline nil)
        )
 
 (my/colors)
@@ -331,15 +331,10 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 (c-add-style "mylinux"
 	     '("linux"
-	       ;;(tab-width . 4)
-	       ;;(c-basic-offset . 4)
 	       (fill-column . 80)
 	       (c-offsets-alist (inline-open . 0)
 				(comment-intro . 0)
-				(cpp-macro . 0)
-				;;(innamespace . [0])
-				;;(access-label '-)
-				)))
+				(cpp-macro . 0))))
 
 (setq-default c-default-style
 	      '((java-mode . "java")
@@ -388,17 +383,22 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; dired
-(require 'dired )
 
-(define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file) ; was dired-advertised-find-file
-(define-key dired-mode-map (kbd "^") (lambda () (interactive) (find-alternate-file "..")))  ; was dired-up-directory
+(defun my/dired-hook () "My dired hook."
+       (require 'dired-x)
+       (setq dired-recursive-copies 'top   ;; Always ask recursive copy
+	     dired-recursive-deletes 'top  ;; Always ask recursive delete
+	     dired-dwim-target t	   ;; Copy in split mode with p
+	     dired-auto-revert-buffer t
+	     dired-x-hands-off-my-keys nil)
+       (put 'dired-find-alternate-file 'disabled nil)
+       (define-key dired-mode-map (kbd "RET")
+	 'dired-find-alternate-file)   ; was dired-advertised-find-file
+       (define-key dired-mode-map (kbd "^")    ; was dired-up-directory
+	 (lambda () (interactive) (find-alternate-file "..")))
+       )
 
-(setq dired-recursive-copies 'top)	;; Always ask recursive copy
-(setq dired-recursive-deletes 'top)     ;; Always ask recursive delete
-(setq dired-dwim-target t)	        ;; Copy in split mode with p
-(setq dired-auto-revert-buffer t)
-(put 'dired-find-alternate-file 'disabled nil)
-(require 'dired-x)
+(add-hook 'dired-load-hook 'my/dired-hook)
 
 (provide 'init)
 ;;; init.el ends here
