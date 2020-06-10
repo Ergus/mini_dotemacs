@@ -192,11 +192,11 @@
 ;;__________________________________________________________
 ;; Isearch
 
-(setq search-nonincremental-instead nil) ;; No incremental if enter & empty
-(setq lazy-highlight-initial-delay 0)
-(setq isearch-allow-scroll t)	      ;; Permit scroll can be 'unlimited
-(setq isearch-lazy-count t)
-(setq isearch-yank-on-move 'shift)       ;; Copy text from buffer with meta
+(setq search-nonincremental-instead nil  ;; No incremental if enter & empty
+      lazy-highlight-initial-delay 0
+      isearch-allow-scroll t 	         ;; Permit scroll can be 'unlimited
+      isearch-lazy-count t
+      isearch-yank-on-move 'shift)       ;; Copy text from buffer with meta
 
 ;;__________________________________________________________
 ;; ssh
@@ -366,6 +366,12 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 (global-set-key (kbd "C-x <down>")  'windmove-down)
 
 ;;__________________________________________________________
+;; Undo
+(global-set-key [remap undo] 'undo-only)
+(global-set-key (kbd "C-M-_") 'undo-redo)
+
+
+;;__________________________________________________________
 ;; Winner mode
 (setq winner-dont-bind-my-keys t)
 (winner-mode t)
@@ -395,8 +401,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
        (define-key dired-mode-map (kbd "RET")
 	 'dired-find-alternate-file)   ; was dired-advertised-find-file
        (define-key dired-mode-map (kbd "^")    ; was dired-up-directory
-	 (lambda () (interactive) (find-alternate-file "..")))
-       )
+	 (lambda () (interactive) (find-alternate-file ".."))))
 
 (add-hook 'dired-load-hook 'my/dired-hook)
 
