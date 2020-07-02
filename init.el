@@ -1,5 +1,5 @@
 ;;; init.el --- Emacs Initialization and Configuration
-;; Copyright (C) 2018-2019 Jimmy Aguilar Mena
+;; Copyright (C) 2018-2020 Jimmy Aguilar Mena
 
 ;; Author: Jimmy Aguilar Mena
 ;; Version: 0.1
@@ -79,22 +79,25 @@
 	      auto-save-default nil         ;; No autosave
 	      auto-save-list-file-name nil
 	      ;; minibuffer interaction
-	      enable-recursive-minibuffers t
 	      minibuffer-message-timeout 1
 	      read-quoted-char-radix 16     ;; Read number of chars with C-q
 	      kill-buffer-query-functions nil
 
 	      eval-expression-print-length nil
 	      eval-expression-print-level nil
+	      tab-bar-show 1
+	      suggest-key-bindings t
 	      )
 
-(minibuffer-depth-indicate-mode 1)
+;; These two must be enabled/disabled together
+;; (setq enable-recursive-minibuffers t) ;; Enable nesting in minibuffer
+;; (minibuffer-depth-indicate-mode 1)    ;; Mostrar nivel de nesting en minibuffer
 
 (fido-mode t)
-;; show choices vertically
+;; show choices verticall
 ;; (setq icomplete-separator "\n")
-(setq icomplete-hide-common-prefix nil)
-(setq icomplete-in-buffer t)
+;; (setq icomplete-hide-common-prefix nil)
+;; (setq icomplete-in-buffer t)
 
 (ffap-bindings)
 
