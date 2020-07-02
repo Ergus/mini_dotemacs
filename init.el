@@ -328,6 +328,10 @@
 ;;__________________________________________________________
 ;; C common mode (for all c-like languajes)
 
+(defvar c-ms-space-for-alignment t
+  "Control ms-space-for-alignment.")
+(make-variable-buffer-local 'c-ms-space-for-alignment)
+
 (defun ms-space-for-alignment ()
   "Make the current line use tabs for indentation and spaces for alignment.
 
@@ -344,24 +348,40 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 			    stream-op
 			    template-args-cont)) ;; <==============
 	(let* ((syn-anchor (c-langelem-pos syn-elt))
-	       (anchor-col (progn (goto-char syn-anchor)
+               (anchor-col (progn (goto-char syn-anchor)
 				  (back-to-indentation)
 				  (current-column))))
-
+	  ;;
 	  (goto-char indent-pos)
 	  (delete-horizontal-space)
 	  (insert-char ?\t (/ anchor-col tab-width))
 	  (insert-char ?\  (- indent-col (current-column)))))))
   (when (= (current-column) 0)
-    (back-to-indentation))
-  )
+    (back-to-indentation)))
+
+(defun c-toggle-ms-space-for-alignment (&optional arg)
+  "Toggle align with spaces."
+  (interactive "P")
+  (setq c-ms-space-for-alignment
+	(c-calculate-state arg c-ms-space-for-alignment))
+  (if c-ms-space-for-alignment
+      (when (and c-ms-space-for-alignment
+		 indent-tabs-mode
+		 (= c-basic-offset tab-width))
+	(add-hook 'c-special-indent-hook #'ms-space-for-alignment nil t))
+    (remove-hook 'c-special-indent-hook #'ms-space-for-alignment t)))
+
+;;====================
 
 (c-add-style "mylinux"
 	     '("linux"
+	       (tab-width . 4)
+	       (c-basic-offset . 4)
 	       (fill-column . 80)
+	       (indent-tabs-mode . t)
+	       (c-hanging-semi&comma-criteria . nil)
 	       (c-offsets-alist (inline-open . 0)
-				(comment-intro . 0)
-				(cpp-macro . 0))))
+				(comment-intro . 0))))
 
 (setq-default c-default-style
 	      '((java-mode . "java")
@@ -369,9 +389,9 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 		(other . "mylinux")))
 
 (defun my/c-mode-common-hook () "My hook for C and C++."
-       (when (and indent-tabs-mode
-		  (= c-basic-offset tab-width))
-	 (add-hook 'c-special-indent-hook 'ms-space-for-alignment nil t))
+       (c-toggle-auto-newline 1)
+       (c-toggle-cpp-indent-to-body 1)
+       (c-toggle-ms-space-for-alignment 1)
        (message "Loaded my/c-mode-common"))
 
 (add-hook 'c-mode-common-hook 'my/c-mode-common-hook)
