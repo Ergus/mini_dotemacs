@@ -373,13 +373,29 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;====================
 
+(defun my/c-semi&comma ()
+  (assq 'class-close c-syntactic-context)
+  )
+
 (c-add-style "mylinux"
 	     '("linux"
 	       (tab-width . 4)
 	       (c-basic-offset . 4)
-	       (fill-column . 80)
 	       (indent-tabs-mode . t)
-	       (c-hanging-semi&comma-criteria . nil)
+	       (fill-column . 80)
+	       (c-hanging-semi&comma-criteria . my/c-semi&comma)
+	       (c-cleanup-list empty-defun-braces ;; {}
+			       brace-else-brace   ;; } else {
+			       brace-elseif-brace ;; } else if {
+			       ;;defun-close-semi   ;; };
+			       )
+	       (c-hanging-braces-alist (brace-list-open)
+				       (brace-entry-open)
+				       (substatement-open after)
+				       (block-close . c-snug-do-while)
+				       (arglist-cont-nonempty)
+				       (class-open . (after))
+				       (class-close . (before)))
 	       (c-offsets-alist (inline-open . 0)
 				(comment-intro . 0))))
 
