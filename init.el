@@ -197,15 +197,17 @@
 ;;__________________________________________________________
 ;;	Seleccionar con el mouse
 
-(xterm-mouse-mode t)			  ;; mover el cursor al click
+(xterm-mouse-mode t) ;; mover el cursor al click
 (defun track-mouse (e))
 (setq-default mouse-sel-mode t ;; Mouse selection
 	      mouse-scroll-delay 0
 	      mouse-wheel-scroll-amount '(5 ((shift) . 1) ((control)))
-	      mouse-wheel-progressive-speed nil
-	      )
-(set-mouse-color "white")		  ;; Flechita del mouse en blanco
-(mouse-wheel-mode t)			  ;; scrolling con el mouse
+	      mouse-wheel-progressive-speed nil)
+
+(set-mouse-color "white")		;; Flechita del mouse en blanco
+
+(if (fboundp 'mouse-wheel-mode)
+    (mouse-wheel-mode t))		;; scrolling con el mouse
 
 (defun my/scroll-up-command (&optional arg)
   (interactive "^P")
