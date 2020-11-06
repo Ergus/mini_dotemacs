@@ -103,6 +103,25 @@
 (ffap-bindings)
 
 ;;__________________________________________________________
+;; Config file not here to not track it
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+(unless (file-exists-p custom-file)
+  (write-region "" nil custom-file))
+
+(load custom-file)
+
+;; Personal Lisp dir
+(defvar mylisp-dir (expand-file-name "lisp" user-emacs-directory))
+
+(unless (file-exists-p mylisp-dir)
+  (make-directory mylisp-dir)
+  (message "Creating %s" mylisp-dir))
+
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
+
+;;__________________________________________________________
 ;; The Colors (I want to change this for a real theme, there are maaaaany)
 
 (load-theme 'simple-16)
