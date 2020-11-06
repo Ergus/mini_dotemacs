@@ -94,6 +94,7 @@
 ;; (minibuffer-depth-indicate-mode 1)    ;; Mostrar nivel de nesting en minibuffer
 
 (fido-mode t)
+(setq completion-auto-help nil)
 ;; show choices verticall
 ;; (setq icomplete-separator "\n")
 ;; (setq icomplete-hide-common-prefix nil)
@@ -104,103 +105,12 @@
 ;;__________________________________________________________
 ;; The Colors (I want to change this for a real theme, there are maaaaany)
 
-(defconst my/colors '((black . "#000000")
-		      (red . "#cd0000")
-		      (green . "#00cd00")
-		      (yellow . "#cdcd00")
-		      (blue . "#0000ee")
-		      (magenta . "#cd00cd")
-		      (cyan . "#00cdcd")
-		      (white . "#e5e5e5")
-		      (brightblack . "#444444") ;;
-		      (brightred . "#ff0000")
-		      (brightgreen . "#00ff00")
-		      (brightyellow . "#ffff00")
-		      (brightblue . "#5c5cff")
-		      (brightmagenta . "#ff00ff")
-		      (brightcyan . "#00ffff")
-		      (brightwhite . "#ffffff"))
-  "List of colors.")
+(load-theme 'simple-16)
+(set-face-attribute 'default t :font "Hack")
 
-(defun my/colors () "Define my color theme."
-
-       (set-face-attribute 'default nil :family "Hack" :height 105)
-
-       (set-background-color (alist-get 'black my/colors))
-       (set-foreground-color (alist-get 'white my/colors))
-
-       (set-face-attribute 'font-lock-preprocessor-face nil
-			   :foreground (alist-get 'magenta my/colors))	;; Preprocessor
-       (set-face-attribute 'font-lock-comment-face nil
-			   :foreground (alist-get 'cyan my/colors))	;; Comentarios
-       (set-face-attribute 'font-lock-doc-face nil
-			   :foreground (alist-get 'brightcyan my/colors)) ;; Documentation
-
-       (set-face-attribute 'font-lock-string-face nil
-			   :foreground (alist-get 'red my/colors))	;; Strings
-       (set-face-attribute 'font-lock-function-name-face nil
-			   :foreground (alist-get 'white my/colors))	;; Funciones
-       (set-face-attribute 'font-lock-variable-name-face nil
-			   :foreground (alist-get 'white my/colors))	;; Variables
-       (set-face-attribute 'font-lock-constant-face nil
-			   :foreground (alist-get 'magenta my/colors))	;; Constates y Clases
-
-       (set-face-attribute 'font-lock-type-face nil
-			   :foreground (alist-get 'green my/colors))	;; Tipos (int, float)
-       (set-face-attribute 'font-lock-keyword-face nil
-			   :foreground (alist-get 'yellow my/colors))	;; Keywords (for, if)
-       (set-face-attribute 'font-lock-builtin-face nil
-			   :foreground (alist-get 'green my/colors))	;; Keywords (for, if)
-
-       (set-face-attribute 'highlight nil
-			   :background (alist-get 'brightblack my/colors)
-			   :foreground nil)
-       (set-face-attribute 'secondary-selection nil
-			   :background (alist-get 'brightblue my/colors))
-
-       ;; search C-s, resalta lo que encuentra
-       (set-face-attribute 'isearch nil
-			   :background (alist-get 'blue my/colors)
-			   :foreground (alist-get 'white my/colors)
-			   :weight 'ultrabold)	;; Search
-
-       (set-face-attribute 'lazy-highlight nil
-			   :background (alist-get 'brightblue my/colors))
-
-       (set-face-attribute 'region nil
-			   :background (alist-get 'brightblue my/colors))
-
-       (set-face-attribute 'mode-line-inactive nil
-			   :background (alist-get 'brightblack my/colors)
-			   :foreground (alist-get 'white my/colors))
-
-       (set-face-attribute 'mode-line nil
-			   :background (alist-get 'blue my/colors)
-			   :foreground (alist-get 'white my/colors))
-
-       (set-face-attribute 'line-number nil
-			   :foreground (alist-get 'brightblack my/colors))
-       (set-face-attribute 'line-number-current-line nil
-			   :foreground (alist-get 'green my/colors))
-       (set-face-attribute 'fill-column-indicator nil
-			   :foreground (alist-get 'brightblack my/colors))
-
-       (set-face-attribute 'tab-bar nil
-			   :background (cdr (assq 'black my/colors))
-			   :foreground (cdr (assq 'white my/colors))
-			   :inverse-video nil)
-
-       (set-face-attribute 'tab-bar-tab nil
-			   :weight 'ultra-bold
-			   :underline t)
-
-       (set-face-attribute 'tab-bar-tab-inactive nil
-			   :background (cdr (assq 'black my/colors))
-			   :foreground (cdr (assq 'brightwhite my/colors))
-			   :weight 'normal :underline nil)
-       )
-
-(my/colors)
+(defmacro named-color (colorname)
+  "Get color by name COLORNAME from `my/colors' alist."
+  (simple-16-theme-color colorname))
 
 
 ;;__________________________________________________________
@@ -212,9 +122,6 @@
 (setq-default show-paren-delay 0
 	      blink-matching-paren nil)
 (show-paren-mode t)	  ;; Highlight couple parentesis
-(set-face-attribute 'show-paren-match nil :inherit nil
-		    :background "blue")
-
 
 ;;__________________________________________________________
 ;; Isearch
@@ -454,12 +361,13 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 ;; dired
 
 (defun my/dired-hook () "My dired hook."
+       (setq-default dired-recursive-copies 'top   ;; Always ask recursive copy
+		     dired-recursive-deletes 'top  ;; Always ask recursive delete
+		     dired-dwim-target t	   ;; Copy in split mode with p
+		     dired-auto-revert-buffer t
+		     ;;dired-x-hands-off-my-keys nil
+		     )
        (require 'dired-x)
-       (setq dired-recursive-copies 'top   ;; Always ask recursive copy
-	     dired-recursive-deletes 'top  ;; Always ask recursive delete
-	     dired-dwim-target t	   ;; Copy in split mode with p
-	     dired-auto-revert-buffer t
-	     dired-x-hands-off-my-keys nil)
        (put 'dired-find-alternate-file 'disabled nil)
        (define-key dired-mode-map (kbd "RET")
 	 'dired-find-alternate-file)   ; was dired-advertised-find-file
