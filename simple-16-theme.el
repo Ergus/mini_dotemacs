@@ -49,7 +49,7 @@
                                  :foreground ,(simple-16-theme-color white)))))
 
  `(font-lock-preprocessor-face ((t (:foreground ,(simple-16-theme-color magenta)))))
- `(font-lock-comment-face ((t (:foreground ,(simple-16-theme-color cyan)))))
+ `(font-lock-comment-face ((t (:foreground ,(simple-16-theme-color blue)))))
  `(font-lock-doc-face ((t (:foreground ,(simple-16-theme-color cyan)))))
  `(font-lock-string-face ((t (:foreground ,(simple-16-theme-color red)))))
  `(font-lock-function-name-face ((t (:foreground ,(simple-16-theme-color white)))))
