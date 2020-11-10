@@ -200,11 +200,14 @@
 (xterm-mouse-mode t) ;; mover el cursor al click
 (defun track-mouse (e))
 (setq-default mouse-sel-mode t ;; Mouse selection
-	      mouse-scroll-delay 0
-	      mouse-wheel-scroll-amount '(5 ((shift) . 1) ((control)))
-	      mouse-wheel-progressive-speed nil)
+	      mouse-scroll-delay 0)
 
 (set-mouse-color "white")		;; Flechita del mouse en blanco
+
+(when (fboundp 'mouse-wheel-mode)
+  (setq-default mouse-wheel-scroll-amount '(5 ((shift) . 1) ((control)))
+		mouse-wheel-progressive-speed nil)
+  (mouse-wheel-mode t))			;; scrolling con el mouse
 
 (if (fboundp 'mouse-wheel-mode)
     (mouse-wheel-mode t))		;; scrolling con el mouse
@@ -256,11 +259,7 @@
 ;;__________________________________________________________
 ;; C common mode (for all c-like languajes)
 
-(defvar c-ms-space-for-alignment t
-  "Control ms-space-for-alignment.")
-(make-variable-buffer-local 'c-ms-space-for-alignment)
-
-(defun ms-space-for-alignment ()
+(defun ms-space-for-alignment-hook ()
   "Make the current line use tabs for indentation and spaces for alignment.
 
 It is intended to be called from the hook
@@ -276,7 +275,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 			    stream-op
 			    template-args-cont)) ;; <==============
 	(let* ((syn-anchor (c-langelem-pos syn-elt))
-               (anchor-col (progn (goto-char syn-anchor)
+	       (anchor-col (progn (goto-char syn-anchor)
 				  (back-to-indentation)
 				  (current-column))))
 	  ;;
@@ -287,17 +286,15 @@ non-nil and probably assumes that `c-basic-offset' is the same as
   (when (= (current-column) 0)
     (back-to-indentation)))
 
-(defun c-toggle-ms-space-for-alignment (&optional arg)
-  "Toggle align with spaces."
-  (interactive "P")
-  (setq c-ms-space-for-alignment
-	(c-calculate-state arg c-ms-space-for-alignment))
-  (if c-ms-space-for-alignment
-      (when (and c-ms-space-for-alignment
-		 indent-tabs-mode
+(define-minor-mode c-ms-space-for-alignment-mode
+  "Enable indent with tabs align with spaces."
+  :global nil
+  :init-value nil
+  (if c-ms-space-for-alignment-mode
+      (when (and indent-tabs-mode
 		 (= c-basic-offset tab-width))
-	(add-hook 'c-special-indent-hook #'ms-space-for-alignment nil t))
-    (remove-hook 'c-special-indent-hook #'ms-space-for-alignment t)))
+	(add-hook 'c-special-indent-hook #'ms-space-for-alignment-hook nil t))
+    (remove-hook 'c-special-indent-hook #'ms-space-for-alignment-hook t)))
 
 ;;====================
 
@@ -311,32 +308,41 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 	       (c-basic-offset . 4)
 	       (indent-tabs-mode . t)
 	       (fill-column . 80)
-	       (c-hanging-semi&comma-criteria . my/c-semi&comma)
+	       ;; (c-hanging-semi&comma-criteria my/c-semi&comma)
+	       (c-hanging-semi&comma-criteria nil)
 	       (c-cleanup-list empty-defun-braces ;; {}
 			       brace-else-brace   ;; } else {
 			       brace-elseif-brace ;; } else if {
-			       ;;defun-close-semi   ;; };
+			       defun-close-semi   ;; }; after class
 			       )
-	       (c-hanging-braces-alist (brace-list-open)
+	       (c-hanging-braces-alist (defun-open before after)
+				       (brace-list-open)
 				       (brace-entry-open)
 				       (substatement-open after)
+				       (namespace-open after)
+				       (namespace-close before)
 				       (block-close . c-snug-do-while)
 				       (arglist-cont-nonempty)
-				       (class-open . (after))
-				       (class-close . (before)))
+				       (class-open after)
+				       (class-close before))
 	       (c-offsets-alist (inline-open . 0)
-				(comment-intro . 0))))
+				(comment-intro . 0)
+				(arglist-close . 0)
+				;;(innamespace . [0])
+				;;(access-label '-)
+				)))
 
 (setq-default c-default-style
 	      '((java-mode . "java")
 		(awk-mode . "awk")
 		(other . "mylinux")))
 
-(defun my/c-mode-common-hook () "My hook for C and C++."
-       (c-toggle-auto-newline 1)
-       (c-toggle-cpp-indent-to-body 1)
-       (c-toggle-ms-space-for-alignment 1)
-       (message "Loaded my/c-mode-common"))
+(defun my/c-mode-common-hook ()
+  "My hook for C and C++."
+  (c-toggle-auto-newline 1)
+  (c-toggle-cpp-indent-to-body 1)
+  (c-ms-space-for-alignment-mode 1)
+  (message "Loaded my/c-mode-common"))
 
 (add-hook 'c-mode-common-hook 'my/c-mode-common-hook)
 
@@ -344,8 +350,9 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 ;; sh mode
 
 (defvaralias 'sh-basic-offset 'tab-width)
-(defun my/sh-mode-hook () "My term mode hook."
-       (setq-local indent-tabs-mode t))
+(defun my/sh-mode-hook ()
+  "My term mode hook."
+  (setq-local indent-tabs-mode t))
 
 (add-hook 'sh-mode-hook 'my/sh-mode-hook)
 
@@ -386,6 +393,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 		     dired-recursive-deletes 'top  ;; Always ask recursive delete
 		     dired-dwim-target t	   ;; Copy in split mode with p
 		     dired-auto-revert-buffer t
+		     dired-isearch-filenames 'dwim ;; Smart limit to file names.
 		     ;;dired-x-hands-off-my-keys nil
 		     )
        (require 'dired-x)
