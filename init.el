@@ -125,7 +125,8 @@
 ;; The Colors (I want to change this for a real theme, there are maaaaany)
 
 (load-theme 'simple-16)
-(set-face-attribute 'default t :font "Hack")
+
+(set-face-attribute 'default nil :family "Hack" :height 105)
 
 (defmacro named-color (colorname)
   "Get color by name COLORNAME from `my/colors' alist."
@@ -145,11 +146,11 @@
 ;;__________________________________________________________
 ;; Isearch
 
-(setq search-nonincremental-instead nil  ;; No incremental if enter & empty
-      lazy-highlight-initial-delay 0
-      isearch-allow-scroll t 	         ;; Permit scroll can be 'unlimited
-      isearch-lazy-count t
-      isearch-yank-on-move 'shift)       ;; Copy text from buffer with meta
+(setq-default search-nonincremental-instead nil  ;; No incremental if enter & empty
+	      lazy-highlight-initial-delay 0
+	      isearch-allow-scroll t 	         ;; Permit scroll can be 'unlimited
+	      isearch-lazy-count t
+	      isearch-yank-on-move 'shift)       ;; Copy text from buffer with meta
 
 ;;__________________________________________________________
 ;; ssh
@@ -171,34 +172,30 @@
        (display-fill-column-indicator-mode -1)
        (auto-fill-mode -1))
 
-(add-hook 'term-mode-hook 'my/term-mode-hook)
+(add-hook 'term-mode-hook #'my/term-mode-hook)
 
 ;;__________________________________________________________
 ;; minibuffers
 
 ;; (setq minibuffer-eldef-shorten-default t)
+(add-hook 'minibuffer-setup-hook
+	  (lambda ()
+	    (setq gc-cons-threshold most-positive-fixnum)))
 
-(defun my/minibuffer-setup-hook ()
-  (setq gc-cons-threshold most-positive-fixnum))
-
-(defun my/minibuffer-exit-hook ()
-  (setq gc-cons-threshold 800000)
-  (garbage-collect))
-
-(add-hook 'minibuffer-setup-hook #'my/minibuffer-setup-hook)
-(add-hook 'minibuffer-exit-hook #'my/minibuffer-exit-hook)
+(add-hook 'minibuffer-exit-hook
+	  (lambda ()
+	    (setq gc-cons-threshold 800000)))
 
 ;;__________________________________________________________
 ;; gdb rectangles
 
-(setq gdb-many-windows nil
-      gdb-show-main t)
+(setq-default gdb-many-windows nil
+	      gdb-show-main t)
 
 ;;__________________________________________________________
 ;;	Seleccionar con el mouse
 
 (xterm-mouse-mode t) ;; mover el cursor al click
-(defun track-mouse (e))
 (setq-default mouse-sel-mode t ;; Mouse selection
 	      mouse-scroll-delay 0)
 
@@ -213,20 +210,12 @@
     (mouse-wheel-mode t))		;; scrolling con el mouse
 
 (defun my/scroll-up-command (&optional arg)
-  (interactive "^P")
-  (if arg
-      (scroll-up-command arg)
-    (scroll-up-command 1)))
+  (interactive "^p")
+  (scroll-up-command arg))
 
 (defun my/scroll-down-command (&optional arg)
-  (interactive "^P")
-  (if arg
-      (scroll-down-command arg)
-    (scroll-down-command 1)))
-
-(defun gcm-scroll-up ()
-  (interactive)
-  (scroll-down 1))
+  (interactive "^p")
+  (scroll-down-command arg))
 
 (global-set-key [remap scroll-up-command] 'my/scroll-up-command)
 (global-set-key [remap scroll-down-command] 'my/scroll-down-command)
@@ -234,24 +223,25 @@
 ;;__________________________________________________________
 ;; My program's mode hooks
 
-(defun my/prog-mode-hook () "Some hooks only for prog mode."
-       ;;(electric-indent-mode t)	    ;; On by default
-       (electric-pair-mode t)		    ;; Autoannadir parentesis
-       (which-function-mode t)		    ;; Shows the function in spaceline
+(defun my/prog-mode-hook ()
+  "Some hooks only for prog mode."
+  ;;(electric-indent-mode t)	    ;; On by default
+  (electric-pair-mode t)		    ;; Autoannadir parentesis
+  (which-function-mode t)		    ;; Shows the function in spaceline
 
-       ;;(define-key global-map (kbd "RET") 'newline-and-indent)
-       (electric-indent-local-mode t)
-       (setq show-trailing-whitespace t)
+  ;;(define-key global-map (kbd "RET") 'newline-and-indent)
+  (electric-indent-local-mode t)
+  (setq show-trailing-whitespace t)
 
-       (defun smart-beginning-of-line ()
-	 "Move point to first non-whitespace character or beginning-of-line."
-	 (interactive)
-	 (let ((oldpos (point)))
-	   (back-to-indentation)
-	   (and (= oldpos (point))
-		(beginning-of-line))))
+  (defun smart-beginning-of-line ()
+    "Move point to first non-whitespace character or beginning-of-line."
+    (interactive)
+    (let ((oldpos (point)))
+      (back-to-indentation)
+      (and (= oldpos (point))
+	   (beginning-of-line))))
 
-       (global-set-key (kbd "C-a") 'smart-beginning-of-line))
+  (global-set-key (kbd "C-a") 'smart-beginning-of-line))
 
 (add-hook 'prog-mode-hook #'my/prog-mode-hook)
 
@@ -345,7 +335,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
   (c-ms-space-for-alignment-mode 1)
   (message "Loaded my/c-mode-common"))
 
-(add-hook 'c-mode-common-hook 'my/c-mode-common-hook)
+(add-hook 'c-mode-common-hook #'my/c-mode-common-hook)
 
 ;;__________________________________________________________
 ;; sh mode
@@ -355,7 +345,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
   "My term mode hook."
   (setq-local indent-tabs-mode t))
 
-(add-hook 'sh-mode-hook 'my/sh-mode-hook)
+(add-hook 'sh-mode-hook #'my/sh-mode-hook)
 
 ;;__________________________________________________________
 ;; Move split keybindings
@@ -388,23 +378,24 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; dired
+(setq-default dired-recursive-copies 'top   ;; Always ask recursive copy
+	      dired-recursive-deletes 'top  ;; Always ask recursive delete
+	      dired-dwim-target t	   ;; Copy in split mode with p
+	      dired-auto-revert-buffer t
+	      dired-listing-switches "-alh")
 
-(defun my/dired-hook () "My dired hook."
-       (setq-default dired-recursive-copies 'top   ;; Always ask recursive copy
-		     dired-recursive-deletes 'top  ;; Always ask recursive delete
-		     dired-dwim-target t	   ;; Copy in split mode with p
-		     dired-auto-revert-buffer t
-		     dired-isearch-filenames 'dwim ;; Smart limit to file names.
-		     ;;dired-x-hands-off-my-keys nil
-		     )
-       (require 'dired-x)
-       (put 'dired-find-alternate-file 'disabled nil)
-       (define-key dired-mode-map (kbd "RET")
-	 'dired-find-alternate-file)   ; was dired-advertised-find-file
-       (define-key dired-mode-map (kbd "^")    ; was dired-up-directory
-	 (lambda () (interactive) (find-alternate-file ".."))))
+(defun my/dired-hook ()
+  "My dired hook."
+  (require 'dired-x)
+  (put 'dired-find-alternate-file 'disabled nil)
+  (define-key dired-mode-map [remap dired-find-file]
+    'dired-find-alternate-file)                         ; was dired-advertised-find-file
+  (define-key dired-mode-map [remap dired-up-directory] ; was dired-up-directory
+    (lambda ()
+      (interactive)
+      (find-alternate-file ".."))))
 
-(add-hook 'dired-load-hook 'my/dired-hook)
+(add-hook 'dired-load-hook #'my/dired-hook)
 
 (provide 'init)
 ;;; init.el ends here
