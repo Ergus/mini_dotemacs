@@ -9,7 +9,7 @@
 ;;; Commentary:
 ;;; Code:
 
-(setq package-quickstart t)
+(setq-default package-quickstart t)
 
 (setq-default auto-revert-verbose nil)	;; not show message when file changes
 (global-auto-revert-mode t)		;; Autoload files changed in disk
@@ -94,7 +94,7 @@
 ;; (minibuffer-depth-indicate-mode 1)    ;; Mostrar nivel de nesting en minibuffer
 
 (fido-mode t)
-(setq completion-auto-help nil)
+(setq-default completion-auto-help nil)
 ;; show choices verticall
 ;; (setq icomplete-separator "\n")
 ;; (setq icomplete-hide-common-prefix nil)
@@ -104,7 +104,7 @@
 
 ;;__________________________________________________________
 ;; Config file not here to not track it
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
 
 (unless (file-exists-p custom-file)
   (write-region "" nil custom-file))
@@ -112,7 +112,7 @@
 (load custom-file)
 
 ;; Personal Lisp dir
-(defvar mylisp-dir (expand-file-name "lisp" user-emacs-directory))
+(defconst mylisp-dir (expand-file-name "lisp" user-emacs-directory))
 
 (unless (file-exists-p mylisp-dir)
   (make-directory mylisp-dir)
@@ -141,7 +141,10 @@
 ;; Show paren mode
 (setq-default show-paren-delay 0
 	      blink-matching-paren nil)
-(show-paren-mode t)	  ;; Highlight couple parentesis
+(show-paren-mode t)	  ;; Highlight couple parenthesis
+
+;; Use cycle-spacing instead of just-one-space on M-SPC
+(global-set-key [remap just-one-space] #'cycle-spacing)
 
 ;;__________________________________________________________
 ;; Isearch
@@ -164,13 +167,12 @@
 	      tramp-persistency-file-name "~/.emacs.d/tramp")
 ;;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
-(defun my/term-mode-hook () "My term mode hook."
-       (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")
-       (setq-local mouse-yank-at-point t)
-       (setq-local transient-mark-mode nil)
-       (display-line-numbers-mode -1)
-       (display-fill-column-indicator-mode -1)
-       (auto-fill-mode -1))
+(defun my/term-mode-hook ()
+  "My term mode hook."
+  (setq-local mouse-yank-at-point t)
+  (setq-local transient-mark-mode nil)
+  (display-fill-column-indicator-mode -1)
+  (auto-fill-mode -1))
 
 (add-hook 'term-mode-hook #'my/term-mode-hook)
 
@@ -241,7 +243,7 @@
       (and (= oldpos (point))
 	   (beginning-of-line))))
 
-  (global-set-key (kbd "C-a") 'smart-beginning-of-line))
+  (global-set-key [remap move-beginning-of-line] #'smart-beginning-of-line))
 
 (add-hook 'prog-mode-hook #'my/prog-mode-hook)
 
@@ -349,23 +351,23 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; Move split keybindings
-(global-set-key (kbd "C-x <left>")  'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
-(global-set-key (kbd "C-x <up>")    'windmove-up)
-(global-set-key (kbd "C-x <down>")  'windmove-down)
+(global-set-key (kbd "C-x <left>")  #'windmove-left)
+(global-set-key (kbd "C-x <right>") #'windmove-right)
+(global-set-key (kbd "C-x <up>")    #'windmove-up)
+(global-set-key (kbd "C-x <down>")  #'windmove-down)
 
 ;;__________________________________________________________
 ;; Undo
-(global-set-key [remap undo] 'undo-only)
-(global-set-key (kbd "C-M-_") 'undo-redo)
+(global-set-key [remap undo] #'undo-only)
+(global-set-key (kbd "C-M-_") #'undo-redo)
 
 
 ;;__________________________________________________________
 ;; Winner mode
-(setq winner-dont-bind-my-keys t)
+(setq-default winner-dont-bind-my-keys t)
 (winner-mode t)
-(global-set-key (kbd "C-x w r")  'winner-undo)
-(global-set-key (kbd "C-x w u")  'winner-redo)
+(global-set-key (kbd "C-x w r")  #'winner-undo)
+(global-set-key (kbd "C-x w u")  #'winner-redo)
 
 ;;__________________________________________________________
 ;; Abbrev mode
