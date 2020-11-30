@@ -46,7 +46,7 @@
 (custom-theme-set-faces
  'simple-16
  `(default ((t (:background ,(simple-16-theme-color black)
-                                 :foreground ,(simple-16-theme-color white)))))
+                            :foreground ,(simple-16-theme-color white)))))
 
  `(font-lock-preprocessor-face ((t (:foreground ,(simple-16-theme-color magenta)))))
  `(font-lock-comment-face ((t (:foreground ,(simple-16-theme-color blue)))))
@@ -60,41 +60,41 @@
  `(font-lock-builtin-face ((t (:foreground ,(simple-16-theme-color green)))))
 
  `(highlight ((t (:background ,(simple-16-theme-color brightblack)
-                                   :foreground nil))))
+                              :foreground nil))))
  `(secondary-selection ((t (:background ,(simple-16-theme-color brightblack)
-                                             :foreground nil))))
+                                        :foreground nil))))
 
  `(isearch ((t (:background ,(simple-16-theme-color blue)
-			         :foreground ,(simple-16-theme-color white)
-			         :weight ultrabold))))
+			    :foreground nil
+			    :weight ultrabold))))
  `(lazy-highlight ((t (:background ,(simple-16-theme-color brightblue)))))
 
  `(region ((t (:background ,(simple-16-theme-color brightblue)))))
 
  `(mode-line ((t (:background ,(simple-16-theme-color blue)
-			           :foreground ,(simple-16-theme-color white)))))
+			      :foreground ,(simple-16-theme-color white)))))
  `(mode-line-inactive ((t (:background ,(simple-16-theme-color brightblack)
-			                    :foreground ,(simple-16-theme-color white)))))
+			               :foreground ,(simple-16-theme-color white)))))
 
  `(line-number ((t (:foreground ,(simple-16-theme-color brightblack)))))
  `(line-number-current-line ((t (:foreground ,(simple-16-theme-color green)))))
  `(fill-column-indicator ((t (:foreground ,(simple-16-theme-color brightblack)))))
 
  `(show-paren-match ((t (:background ,(simple-16-theme-color brightblack)
-                                          :inherit nil))))
+                                     :inherit nil))))
 
  `(tab-bar ((t (:background ,(simple-16-theme-color black)
-                                 :foreground ,(simple-16-theme-color white)
-                                 :inverse-video nil))))
- `(tab-bar-tab ((t (:inherit tab-bar :weight ultra-bold :underline t))))
+                            :foreground ,(simple-16-theme-color white)
+                            :inverse-video nil))))
+ `(tab-bar-tab ((t (:inherit tab-bar :weight ultra-bold))))
 
  `(tab-bar-tab-inactive ((t (:background ,(simple-16-theme-color black)
-                                              :foreground ,(simple-16-theme-color brightwhite)
-                                              :weight normal
-                                              :underline nil))))
+                                         :foreground ,(simple-16-theme-color brightblack)
+                                         :weight normal
+                                         :underline nil))))
 
  `(Man-overstrike ((t (:inherit font-lock-type-face :bold t))))
- `(Man-overstrike ((t (:inherit font-lock-keyword-face :underline t))))
+ `(Man-underline ((t (:inherit font-lock-keyword-face :underline t))))
 
  `(which-func ((t (:background nil :foreground ,(simple-16-theme-color white)))))
 
@@ -103,7 +103,7 @@
  ;; External packages
  ;; Company
  `(company-tooltip ((t (:background ,(simple-16-theme-color brightblack)
-                                         :foreground ,(simple-16-theme-color white)))))
+                                    :foreground ,(simple-16-theme-color white)))))
  `(company-tooltip-common ((t (:inherit company-tooltip
                                         :foreground ,(simple-16-theme-color green)))))
  `(company-tooltip-selection ((t (:background ,(simple-16-theme-color blue)
@@ -112,28 +112,31 @@
  `(company-scrollbar-fg ((t (:background ,(simple-16-theme-color blue)))))
 
  ;; Ivy
- `(ivy-minibuffer-match-face-1 ((t (:inherit nil :background nil
-                                                  :foreground nil
-                                                  :underline t))))
+ `(ivy-current-match ((t (:inherit nil
+				   :background ,(simple-16-theme-color blue)
+				   :foreground nil))))
+
+ `(ivy-minibuffer-match-face-1 ((t (:inherit nil :background nil)))) ;; Between matches
  ;; Ivy like lazy-highlight
- `(ivy-minibuffer-match-face-2 ((t (:background ,(simple-16-theme-color brightblue)))))
- `(ivy-minibuffer-match-face-3 ((t (:background ,(simple-16-theme-color brightblue)))))
- `(ivy-minibuffer-match-face-4 ((t (:background ,(simple-16-theme-color brightblue)))))
+ `(ivy-minibuffer-match-face-2 ((t (:inherit lazy-highlight :weight ultra-bold))))
+ `(ivy-minibuffer-match-face-3 ((t (:inherit lazy-highlight :weight ultra-bold))))
+ `(ivy-minibuffer-match-face-4 ((t (:inherit lazy-highlight :weight ultra-bold))))
 
  ;; Swiper
- `(swiper-match-face-1 ((t (:inherit nil :background nil :underline t))))
- ;; Swiper like lazy-highlight
- `(swiper-background-match-face-2 ((t (:background ,(simple-16-theme-color brightblue)))))
- `(swiper-background-match-face-3 ((t (:background ,(simple-16-theme-color brightblue)))))
- `(swiper-background-match-face-4 ((t (:background ,(simple-16-theme-color brightblue)))))
- ;; Swiper background like isearch
- `(swiper-match-face-2 ((t (:background ,(simple-16-theme-color brightblue)))))
- `(swiper-match-face-3 ((t (:background ,(simple-16-theme-color brightblue)))))
- `(swiper-match-face-4 ((t (:background ,(simple-16-theme-color brightblue)))))
+ `(swiper-match-face-1 ((t (:inherit nil))))
+ `(swiper-match-face-2 ((t (:inherit isearch))))
+ `(swiper-match-face-3 ((t (:inherit isearch))))
+ `(swiper-match-face-4 ((t (:inherit isearch))))
 
  ;; Avy
  `(avy-lead-face ((t (:background ,(simple-16-theme-color blue)
                                   :foreground ,(simple-16-theme-color red)))))
+
+ ;;Flycheck
+ `(flycheck-error ((t (:inherit nil :background nil :foreground nil :underline t))))
+
+ ;;Flymake
+ `(flymake-error ((t (:inherit nil :background nil :foreground nil :underline t))))
  )
 
 (provide-theme 'simple-16)
