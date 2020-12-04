@@ -232,26 +232,26 @@
 
 (defun my/prog-mode-hook ()
   "Some hooks only for prog mode."
-  ;;(electric-indent-mode t)	    ;; On by default
-  (electric-pair-mode t)		    ;; Autoannadir parentesis
-  (which-function-mode t)		    ;; Shows the function in spaceline
+  ;;(electric-indent-mode t)	;; On by default
+  (electric-pair-local-mode 1)	;; Autoannadir parentesis
+  (which-function-mode 1)	;; Shows the function in spaceline
 
   ;;(define-key global-map (kbd "RET") 'newline-and-indent)
-  (electric-indent-local-mode t)
-  (setq show-trailing-whitespace t)
-
-  (defun smart-beginning-of-line ()
-    "Move point to first non-whitespace character or beginning-of-line."
-    (interactive)
-    (let ((oldpos (point)))
-      (back-to-indentation)
-      (and (= oldpos (point))
-	   (beginning-of-line))))
-
-  (global-set-key [remap move-beginning-of-line] #'smart-beginning-of-line))
+  ;;(electric-indent-local-mode t)
+  (setq-local show-trailing-whitespace t))
 
 (add-hook 'prog-mode-hook #'my/prog-mode-hook)
 
+(defun smart-beginning-of-line ()
+  "Move point to first non-whitespace character or beginning-of-line."
+  (interactive)
+  (let ((oldpos (point)))
+    (back-to-indentation)
+    (and (<= oldpos (point))
+	 (/= (line-beginning-position) oldpos)
+	 (beginning-of-line))))
+
+(global-set-key [remap move-beginning-of-line] #'smart-beginning-of-line)
 
 ;;__________________________________________________________
 ;; C common mode (for all c-like languajes)
