@@ -11,7 +11,8 @@
 
 (setq-default package-quickstart t)
 
-(setq-default auto-revert-verbose nil)	;; not show message when file changes
+(setq-default auto-revert-verbose nil       ;; not show message when file changes
+	      auto-revert-avoid-polling t)  ;; use save signal
 (global-auto-revert-mode t)		;; Autoload files changed in disk
 
 (setq-default display-line-numbers-widen t) ;; keep line numbers inside a narrow
@@ -33,7 +34,7 @@
 (column-number-mode t)			;; Numero de la columna
 (line-number-mode t)			;; Numero de linea modeline
 
-(save-place-mode t)                     ;; Remember point in files
+(save-place-mode 1)                     ;; Remember point in files
 
 (setq-default vc-follow-symlinks t	    ;; Open links not open
 	      ;;tab-always-indent complete  ;; make tab key do indent only
@@ -87,6 +88,8 @@
 	      eval-expression-print-level nil
 	      tab-bar-show 1
 	      suggest-key-bindings t
+
+	      uniquify-buffer-name-style 'post-forward
 	      )
 
 ;; Vertical window divider
@@ -163,11 +166,13 @@
 ;;__________________________________________________________
 ;; ssh
 (setq-default compilation-scroll-output 'first-error
+	      compilation-always-kill t
 	      tramp-auto-save-directory "~/.emacs.d/tramp-autosave-dir"
 	      tramp-default-method "rsync"
 	      ;;tramp-default-method "ssh"
 	      ;;tramp-change-syntax 'simplified
 	      tramp-use-ssh-controlmaster-options nil
+	      remote-file-name-inhibit-cache 120
 	      tramp-completion-reread-directory-timeout t
 	      tramp-persistency-file-name "~/.emacs.d/tramp")
 ;;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
@@ -182,6 +187,11 @@
 (add-hook 'term-mode-hook #'my/term-mode-hook)
 
 ;;__________________________________________________________
+;; tabs and tabbar
+(setq-default tab-bar-tab-hints t  ;; show tab numbers
+	      tab-bar-close-last-tab-choice 'tab-bar-mode-disable)
+
+;;__________________________________________________________
 ;; minibuffers
 
 ;; (setq minibuffer-eldef-shorten-default t)
@@ -191,7 +201,7 @@
 
 (add-hook 'minibuffer-exit-hook
 	  (lambda ()
-	    (setq gc-cons-threshold 800000)))
+	    (setq gc-cons-threshold my/gc-cons-threshold)))
 
 ;;__________________________________________________________
 ;; gdb rectangles
@@ -228,6 +238,11 @@
 (global-set-key [remap scroll-down-command] 'my/scroll-down-command)
 
 ;;__________________________________________________________
+;; Ediff
+(setq-default ediff-window-setup-function #'ediff-setup-windows-plain
+	      ediff-split-window-function #'split-window-horizontally)
+
+;;__________________________________________________________
 ;; My program's mode hooks
 
 (defun my/prog-mode-hook ()
@@ -242,7 +257,7 @@
 
 (add-hook 'prog-mode-hook #'my/prog-mode-hook)
 
-(defun smart-beginning-of-line ()
+(defun my/smart-beginning-of-line ()
   "Move point to first non-whitespace character or beginning-of-line."
   (interactive)
   (let ((oldpos (point)))
@@ -251,7 +266,7 @@
 	 (/= (line-beginning-position) oldpos)
 	 (beginning-of-line))))
 
-(global-set-key [remap move-beginning-of-line] #'smart-beginning-of-line)
+(global-set-key [remap move-beginning-of-line] #'my/smart-beginning-of-line)
 
 ;;__________________________________________________________
 ;; C common mode (for all c-like languajes)
@@ -307,7 +322,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 		 (indent-tabs-mode . t)
 		 (fill-column . 80)
 		 ;; (c-hanging-semi&comma-criteria my/c-semi&comma)
-		 (c-hanging-semi&comma-criteria nil)
+		 (c-hanging-semi&comma-criteria . nil)
 		 (c-cleanup-list empty-defun-braces ;; {}
 				 brace-else-brace   ;; } else {
 				 brace-elseif-brace ;; } else if {
@@ -373,6 +388,13 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 (winner-mode t)
 (global-set-key (kbd "C-x w r")  #'winner-undo)
 (global-set-key (kbd "C-x w u")  #'winner-redo)
+
+;;__________________________________________________________
+;; Eldoc
+
+(setq-default eldoc-idle-delay 2                   ;; default 0.5
+	      eldoc-print-after-edit t             ;; only show after edit
+	      eldoc-echo-area-display-truncation-message nil) ;; Not verbose when truncated
 
 ;;__________________________________________________________
 ;; Transpose
