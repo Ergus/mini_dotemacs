@@ -295,9 +295,9 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;====================
 
-(defun my/c-semi&comma ()
-  (assq 'class-close c-syntactic-context)
-  )
+;; (defun my/c-semi&comma ()
+;;   (assq 'class-close c-syntactic-context)
+;;   )
 
 (with-eval-after-load 'cc-mode
   (c-add-style "mylinux"
@@ -373,6 +373,18 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 (winner-mode t)
 (global-set-key (kbd "C-x w r")  #'winner-undo)
 (global-set-key (kbd "C-x w u")  #'winner-redo)
+
+;;__________________________________________________________
+;; Transpose
+(global-set-key (kbd "C-M-<left>")
+		(lambda () (interactive) (transpose-words -1)))
+
+(global-set-key (kbd "C-M-<right>") #'transpose-words)
+
+(global-set-key (kbd "M-<left>")
+		(lambda () (interactive) (transpose-chars -1)))
+
+(global-set-key (kbd "M-<right>") #'transpose-chars)
 
 ;;__________________________________________________________
 ;; Abbrev mode
