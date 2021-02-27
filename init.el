@@ -143,7 +143,10 @@
 
 ;;__________________________________________________________
 ;; I don't want confirm exit, not write yes-not either
-(defalias 'yes-or-no-p 'y-or-n-p) ;; Reemplazar "yes" por "y" en el prompt
+(if (version< emacs-version "28.0")
+    (defalias 'yes-or-no-p 'y-or-n-p) ;; Reemplazar "yes" por "y" en el prompt
+  (setq-default use-short-answers t))
+
 
 ;;__________________________________________________________
 ;; Show paren mode
@@ -161,7 +164,20 @@
 	      lazy-highlight-initial-delay 0
 	      isearch-allow-scroll t 	         ;; Permit scroll can be 'unlimited
 	      isearch-lazy-count t
+	      search-ring-max 64
+	      regexp-search-ring-max 64
 	      isearch-yank-on-move 'shift)       ;; Copy text from buffer with meta
+
+(with-eval-after-load 'isearch
+  (define-key isearch-mode-map
+    [remap isearch-delete-char] #'isearch-del-char)
+
+  (defun my/goto-match-beginning ()
+    (when (and isearch-forward
+	       (not isearch-mode-end-hook-quit))
+      (goto-char isearch-other-end)))
+
+  (add-hook 'isearch-mode-end-hook #'my/goto-match-beginning))
 
 ;;__________________________________________________________
 ;; ssh
@@ -177,14 +193,15 @@
 	      tramp-persistency-file-name "~/.emacs.d/tramp")
 ;;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
 
-(defun my/term-mode-hook ()
-  "My term mode hook."
-  (setq-local mouse-yank-at-point t)
-  (setq-local transient-mark-mode nil)
-  (display-fill-column-indicator-mode -1)
-  (auto-fill-mode -1))
+(with-eval-after-load 'term
+  (defun my/term-mode-hook ()
+    "My term mode hook."
+    (setq-local mouse-yank-at-point t)
+    (setq-local transient-mark-mode nil)
+    (display-fill-column-indicator-mode -1)
+    (auto-fill-mode -1))
 
-(add-hook 'term-mode-hook #'my/term-mode-hook)
+  (add-hook 'term-mode-hook #'my/term-mode-hook))
 
 ;;__________________________________________________________
 ;; tabs and tabbar
@@ -234,8 +251,8 @@
   (interactive "^p")
   (scroll-down-command arg))
 
-(global-set-key [remap scroll-up-command] 'my/scroll-up-command)
-(global-set-key [remap scroll-down-command] 'my/scroll-down-command)
+(global-set-key [remap scroll-up-command] #'my/scroll-up-command)
+(global-set-key [remap scroll-down-command] #'my/scroll-down-command)
 
 ;;__________________________________________________________
 ;; Ediff
@@ -245,17 +262,18 @@
 ;;__________________________________________________________
 ;; My program's mode hooks
 
-(defun my/prog-mode-hook ()
-  "Some hooks only for prog mode."
-  ;;(electric-indent-mode t)	;; On by default
-  (electric-pair-local-mode 1)	;; Autoannadir parentesis
-  (which-function-mode 1)	;; Shows the function in spaceline
+(with-eval-after-load 'prog-mode
+  (defun my/prog-mode-hook ()
+    "Some hooks only for prog mode."
+    ;;(electric-indent-mode t)	;; On by default
+    (electric-pair-local-mode 1)	;; Autoannadir parentesis
+    (which-function-mode 1)	;; Shows the function in spaceline
 
-  ;;(define-key global-map (kbd "RET") 'newline-and-indent)
-  ;;(electric-indent-local-mode t)
-  (setq-local show-trailing-whitespace t))
+    ;;(define-key global-map (kbd "RET") 'newline-and-indent)
+    ;;(electric-indent-local-mode t)
+    (setq-local show-trailing-whitespace t))
 
-(add-hook 'prog-mode-hook #'my/prog-mode-hook)
+  (add-hook 'prog-mode-hook #'my/prog-mode-hook))
 
 (defun my/smart-beginning-of-line ()
   "Move point to first non-whitespace character or beginning-of-line."
@@ -314,6 +332,11 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 ;;   (assq 'class-close c-syntactic-context)
 ;;   )
 
+(setq-default c-default-style
+	      '((java-mode . "java")
+		(awk-mode . "awk")
+		(other . "mylinux")))
+
 (with-eval-after-load 'cc-mode
   (c-add-style "mylinux"
 	       '("linux"
@@ -343,31 +366,27 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 				  (arglist-close . 0)
 				  ;;(innamespace . [0])
 				  ;;(access-label '-)
-				  ))))
+				  )))
 
-(setq-default c-default-style
-	      '((java-mode . "java")
-		(awk-mode . "awk")
-		(other . "mylinux")))
+  (defun my/c-mode-common-hook ()
+    "My hook for C and C++."
+    (c-toggle-auto-newline 1)
+    (c-toggle-cpp-indent-to-body 1)
+    (c-ms-space-for-alignment-mode 1)
+    (message "Loaded my/c-mode-common"))
 
-(defun my/c-mode-common-hook ()
-  "My hook for C and C++."
-  (c-toggle-auto-newline 1)
-  (c-toggle-cpp-indent-to-body 1)
-  (c-ms-space-for-alignment-mode 1)
-  (message "Loaded my/c-mode-common"))
-
-(add-hook 'c-mode-common-hook #'my/c-mode-common-hook)
+  (add-hook 'c-mode-common-hook #'my/c-mode-common-hook))
 
 ;;__________________________________________________________
 ;; sh mode
 
-(defvaralias 'sh-basic-offset 'tab-width)
-(defun my/sh-mode-hook ()
-  "My term mode hook."
-  (setq-local indent-tabs-mode t))
+(with-eval-after-load 'sh-script
+  (defvaralias 'sh-basic-offset 'tab-width)
+  (defun my/sh-mode-hook ()
+    "My term mode hook."
+    (setq-local indent-tabs-mode t))
 
-(add-hook 'sh-mode-hook #'my/sh-mode-hook)
+  (add-hook 'sh-mode-hook #'my/sh-mode-hook))
 
 ;;__________________________________________________________
 ;; Move split keybindings
@@ -414,8 +433,9 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; ibuffer
-(defalias 'list-buffers 'ibuffer)
-(global-set-key [list-buffers] 'ibuffer)
+;;(defalias 'list-buffers 'ibuffer)
+(global-set-key [remap list-buffers] #'ibuffer)
+(setq-default ibuffer-default-sorting-mode 'alphabetic)
 
 ;;__________________________________________________________
 ;; dired
@@ -425,18 +445,19 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 	      dired-auto-revert-buffer t
 	      dired-listing-switches "-alh")
 
-(defun my/dired-hook ()
-  "My dired hook."
-  (require 'dired-x)
-  (put 'dired-find-alternate-file 'disabled nil)
-  (define-key dired-mode-map [remap dired-find-file]
-    'dired-find-alternate-file)                         ; was dired-advertised-find-file
-  (define-key dired-mode-map [remap dired-up-directory] ; was dired-up-directory
-    (lambda ()
-      (interactive)
-      (find-alternate-file ".."))))
 
-(add-hook 'dired-load-hook #'my/dired-hook)
+(with-eval-after-load 'dired
+  (defun my/dired-hook ()
+    "My dired hook."
+    (require 'dired-x)
+    (put 'dired-find-alternate-file 'disabled nil)
+    (define-key dired-mode-map [remap dired-find-file] #'dired-find-alternate-file)  ; was dired-advertised-find-file
+    (define-key dired-mode-map [remap dired-up-directory] ; was dired-up-directory
+		(lambda ()
+		  (interactive)
+		  (find-alternate-file ".."))))
+
+  (add-hook 'dired-load-hook #'my/dired-hook))
 
 (provide 'init)
 ;;; init.el ends here
