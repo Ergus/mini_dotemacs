@@ -143,7 +143,7 @@
 
 ;;__________________________________________________________
 ;; I don't want confirm exit, not write yes-not either
-(if (version< emacs-version "28.0")
+(if (< emacs-major-version 28)
     (defalias 'yes-or-no-p 'y-or-n-p) ;; Reemplazar "yes" por "y" en el prompt
   (setq-default use-short-answers t))
 
