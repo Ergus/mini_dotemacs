@@ -148,7 +148,10 @@
 ;; I don't want confirm exit, not write yes-not either
 (if (< emacs-major-version 28)
     (defalias 'yes-or-no-p 'y-or-n-p) ;; Reemplazar "yes" por "y" en el prompt
-  (setq-default use-short-answers t))
+
+  (setq-default use-short-answers t)  ;; use y-or-n
+  (repeat-mode 1)                     ;; Repeat mode
+  )
 
 
 ;;__________________________________________________________
