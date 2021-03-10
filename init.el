@@ -89,6 +89,9 @@
 	      tab-bar-show 1
 	      suggest-key-bindings t
 
+	      read-extended-command-predicate t ;; M-x show context-local commands
+	      goto-line-history-local t         ;; Buffer local goto-line history
+
 	      uniquify-buffer-name-style 'post-forward
 	      )
 
