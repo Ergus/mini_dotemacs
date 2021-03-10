@@ -34,7 +34,9 @@
 (column-number-mode t)			;; Numero de la columna
 (line-number-mode t)			;; Numero de linea modeline
 
-(save-place-mode 1)                     ;; Remember point in files
+(setq-default save-place-ignore-files-regexp  ;; Modified to add /tmp/* files
+	      "\\(?:COMMIT_EDITMSG\\|hg-editor-[[:alnum:]]+\\.txt\\|svn-commit\\.tmp\\|bzr_log\\.[[:alnum:]]+\\|^/tmp/.+\\)$")
+(save-place-mode 1)                         ;; Remember point in files
 
 (setq-default vc-follow-symlinks t	    ;; Open links not open
 	      ;;tab-always-indent complete  ;; make tab key do indent only
@@ -86,7 +88,6 @@
 
 	      eval-expression-print-length nil
 	      eval-expression-print-level nil
-	      tab-bar-show 1
 	      suggest-key-bindings t
 
 	      read-extended-command-predicate t ;; M-x show context-local commands
@@ -112,6 +113,8 @@
 ;; (setq icomplete-in-buffer t)
 
 (ffap-bindings)
+
+(recentf-mode 1)
 
 ;;__________________________________________________________
 ;; Config file not here to not track it
@@ -212,7 +215,8 @@
 ;;__________________________________________________________
 ;; tabs and tabbar
 (setq-default tab-bar-tab-hints t  ;; show tab numbers
-	      tab-bar-close-last-tab-choice 'tab-bar-mode-disable)
+	      tab-bar-close-last-tab-choice 'tab-bar-mode-disable
+	      tab-bar-show 1)
 
 ;;__________________________________________________________
 ;; minibuffers
@@ -231,6 +235,13 @@
 
 (setq-default gdb-many-windows nil
 	      gdb-show-main t)
+
+;;__________________________________________________________
+;; ispell
+
+(setq-default ispell-following-word t
+	      ispell-quietly t)
+
 
 ;;__________________________________________________________
 ;;	Seleccionar con el mouse
@@ -394,6 +405,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
     (c-toggle-auto-newline 1)
     (c-toggle-cpp-indent-to-body 1)
     (c-ms-space-for-alignment-mode 1)
+    (subword-mode 1)
     (message "Loaded my/c-mode-common"))
 
   (add-hook 'c-mode-common-hook #'my/c-mode-common-hook))
@@ -462,6 +474,9 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 ;;(defalias 'list-buffers 'ibuffer)
 (global-set-key [remap list-buffers] #'ibuffer)
 (setq-default ibuffer-default-sorting-mode 'alphabetic)
+
+(add-hook 'ibuffer-mode-hook (lambda ()
+			       (hl-line-mode 1)))
 
 ;;__________________________________________________________
 ;; dired
