@@ -393,10 +393,15 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; Move split keybindings
-(global-set-key (kbd "C-x <left>")  #'windmove-left)
-(global-set-key (kbd "C-x <right>") #'windmove-right)
-(global-set-key (kbd "C-x <up>")    #'windmove-up)
-(global-set-key (kbd "C-x <down>")  #'windmove-down)
+(define-key ctl-x-map (kbd "<left>")  #'windmove-left)
+(define-key ctl-x-map (kbd "<right>") #'windmove-right)
+(define-key ctl-x-map (kbd "<up>")    #'windmove-up)
+(define-key ctl-x-map (kbd "<down>")  #'windmove-down)
+
+(define-key ctl-x-map (kbd "C-M-<left>")  #'windmove-swap-states-left)
+(define-key ctl-x-map (kbd "C-M-<right>")  #'windmove-swap-states-right)
+(define-key ctl-x-map (kbd "C-M-<down>")  #'windmove-swap-states-down)
+(define-key ctl-x-map (kbd "C-M-<up>")  #'windmove-swap-states-up)
 
 ;;__________________________________________________________
 ;; Undo
@@ -408,8 +413,8 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 ;; Winner mode
 (setq-default winner-dont-bind-my-keys t)
 (winner-mode t)
-(global-set-key (kbd "C-x w r")  #'winner-undo)
-(global-set-key (kbd "C-x w u")  #'winner-redo)
+(define-key ctl-x-map (kbd "w u")  #'winner-undo)
+(define-key ctl-x-map (kbd "w r")  #'winner-redo)
 
 ;;__________________________________________________________
 ;; Eldoc
