@@ -264,6 +264,21 @@
 ;; Ediff
 (setq-default ediff-window-setup-function #'ediff-setup-windows-plain
 	      ediff-split-window-function #'split-window-horizontally)
+(with-eval-after-load 'winner
+  (add-hook 'ediff-after-quit-hook-internal #'winner-undo))
+
+;;__________________________________________________________
+;; smerge
+(setq-default smerge-diff-buffer-name "*smerge-diff*")
+
+(defun my/enable-smerge-maybe ()
+    "Auto-enable `smerge-mode' when merge conflict is detected."
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward "^<<<<<<< " nil t)
+	(smerge-mode 1))))
+
+(add-hook 'find-file-hook #'my/prog-mode-hook)
 
 ;;__________________________________________________________
 ;; My program's mode hooks
