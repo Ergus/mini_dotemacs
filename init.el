@@ -90,7 +90,8 @@
 	      eval-expression-print-level nil
 	      suggest-key-bindings t
 
-	      read-extended-command-predicate t ;; M-x show context-local commands
+	      ;; M-x show context-local commands
+	      read-extended-command-predicate #'command-completion-default-include-p
 	      goto-line-history-local t         ;; Buffer local goto-line history
 
 	      uniquify-buffer-name-style 'post-forward
