@@ -119,11 +119,12 @@
 
 ;;__________________________________________________________
 ;; Config file not here to not track it
-(setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
+(setq-default custom-file
+	      (expand-file-name "custom.el" user-emacs-directory))
 
 (unless (file-exists-p custom-file)
-  (write-region "" nil custom-file))
-
+  (write-region "" nil custom-file)
+  (message "Creating %s" custom-file))
 (load custom-file)
 
 ;; Personal Lisp dir
@@ -135,18 +136,12 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
-
 ;;__________________________________________________________
 ;; The Colors (I want to change this for a real theme, there are maaaaany)
 
 (load-theme 'simple-16)
 
 (set-face-attribute 'default nil :family "Hack" :height 105)
-
-(defmacro named-color (colorname)
-  "Get color by name COLORNAME from `my/colors' alist."
-  (simple-16-theme-color colorname))
-
 
 ;;__________________________________________________________
 ;; I don't want confirm exit, not write yes-not either
@@ -218,7 +213,6 @@
 (setq-default tab-bar-tab-hints t  ;; show tab numbers
 	      tab-bar-close-last-tab-choice 'tab-bar-mode-disable
 	      tab-bar-show 1)
-
 ;;__________________________________________________________
 ;; minibuffers
 
@@ -233,16 +227,13 @@
 
 ;;__________________________________________________________
 ;; gdb rectangles
-
 (setq-default gdb-many-windows nil
 	      gdb-show-main t)
 
 ;;__________________________________________________________
 ;; ispell
-
 (setq-default ispell-following-word t
 	      ispell-quietly t)
-
 
 ;;__________________________________________________________
 ;;	Seleccionar con el mouse
@@ -262,10 +253,12 @@
     (mouse-wheel-mode t))		;; scrolling con el mouse
 
 (defun my/scroll-up-command (&optional arg)
+  "Scroll by 1 line without prefix ARG."
   (interactive "^p")
   (scroll-up-command arg))
 
 (defun my/scroll-down-command (&optional arg)
+  "Scroll by 1 line without prefix ARG."
   (interactive "^p")
   (scroll-down-command arg))
 
@@ -320,7 +313,8 @@
 (global-set-key [remap move-beginning-of-line] #'my/smart-beginning-of-line)
 
 ;;__________________________________________________________
-;; C common mode (for all c-like languajes)
+;; C common mode (for all c-like languages)
+;; This is a minor mode to do indent with tabs and align with spaces.
 
 (defun ms-space-for-alignment-hook ()
   "Make the current line use tabs for indentation and spaces for alignment.
