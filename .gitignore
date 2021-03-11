@@ -1,5 +1,10 @@
-elpa
-history
-places
-custom.el
-recentf
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!early-init.el
+!init.el
+!lisp
+!Readme.md
+!simple-16-theme.el
