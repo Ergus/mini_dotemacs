@@ -244,30 +244,30 @@
 
 (set-mouse-color "white")		;; Flechita del mouse en blanco
 
-(when (fboundp 'mouse-wheel-mode)
-  (setq-default mouse-wheel-scroll-amount '(5 ((shift) . 1) ((control)))
-		mouse-wheel-progressive-speed nil)
-  (mouse-wheel-mode t))			;; scrolling con el mouse
-
-;; (defun my/scroll-up-command (&optional arg)
-;;   "Scroll by 1 line without prefix ARG."
-;;   (interactive "^p")
-;;   (scroll-up-command arg))
-
-;; (defun my/scroll-down-command (&optional arg)
-;;   "Scroll by 1 line without prefix ARG."
-;;   (interactive "^p")
-;;   (scroll-down-command arg))
-
-;; (global-set-key [remap scroll-up-command] #'my/scroll-up-command)
-;; (global-set-key [remap scroll-down-command] #'my/scroll-down-command)
-
 ;; Mouse scrolling.
 (if (fboundp 'mouse-wheel-mode)
-    (mouse-wheel-mode t)
+    (progn
+      (setq-default mouse-wheel-scroll-amount '(5 ((shift) . 1) ((control)))
+		    mouse-wheel-progressive-speed nil)
+      (mouse-wheel-mode t))
 
+  ;; Else set them manually
   (global-set-key (kbd "<mouse-4>") #'scroll-down-command)
   (global-set-key (kbd "<mouse-5>") #'scroll-up-command))
+
+
+(defun my/scroll-up-command (&optional arg)
+  "Scroll by 1 line without prefix ARG."
+  (interactive "^p")
+  (scroll-up-command arg))
+
+(defun my/scroll-down-command (&optional arg)
+  "Scroll by 1 line without prefix ARG."
+  (interactive "^p")
+  (scroll-down-command arg))
+
+(global-set-key [remap scroll-up-command] #'my/scroll-up-command)
+(global-set-key [remap scroll-down-command] #'my/scroll-down-command)
 
 ;;__________________________________________________________
 ;; Ediff
