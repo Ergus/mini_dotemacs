@@ -13,7 +13,7 @@
 
 (setq-default auto-revert-verbose nil       ;; not show message when file changes
 	      auto-revert-avoid-polling t)  ;; use save signal
-(global-auto-revert-mode t)		;; Autoload files changed in disk
+(run-with-idle-timer 1 nil #'global-auto-revert-mode t)
 
 (setq-default display-line-numbers-widen t) ;; keep line numbers inside a narrow
 (global-display-line-numbers-mode t)	;; line numbers on the left
@@ -113,7 +113,7 @@
 ;; (setq icomplete-hide-common-prefix nil)
 ;; (setq icomplete-in-buffer t)
 
-(ffap-bindings)
+(run-with-idle-timer 2 nil #'ffap-bindings)
 
 (recentf-mode 1)
 
