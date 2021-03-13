@@ -413,7 +413,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 ;; sh mode
 
 (with-eval-after-load 'sh-script
-  (defvaralias 'sh-basic-offset 'tab-width)
+  (setq sh-basic-offset 'tab-width)
   (defun my/sh-mode-hook ()
     "My term mode hook."
     (setq-local indent-tabs-mode t))
