@@ -95,6 +95,7 @@
 	      goto-line-history-local t         ;; Buffer local goto-line history
 
 	      uniquify-buffer-name-style 'post-forward
+	      switch-to-buffer-obey-display-actions t ;; switching the buffer respects display actions
 	      )
 
 ;; Vertical window divider
@@ -422,6 +423,11 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; Move split keybindings
+(define-key ctl-x-map (kbd "4 <left>")  #'windmove-display-left)
+(define-key ctl-x-map (kbd "4 <right>")  #'windmove-display-right)
+(define-key ctl-x-map (kbd "4 <up>")  #'windmove-display-up)
+(define-key ctl-x-map (kbd "4 <down>")  #'windmove-display-down)
+
 (define-key ctl-x-map (kbd "<left>")  #'windmove-left)
 (define-key ctl-x-map (kbd "<right>") #'windmove-right)
 (define-key ctl-x-map (kbd "<up>")    #'windmove-up)
