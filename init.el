@@ -107,8 +107,8 @@
 ;; (setq enable-recursive-minibuffers t) ;; Enable nesting in minibuffer
 ;; (minibuffer-depth-indicate-mode 1)    ;; Mostrar nivel de nesting en minibuffer
 
-(fido-mode t)
-(setq-default completion-auto-help nil)
+;; (fido-mode t)
+;; (setq-default completion-auto-help nil)
 ;; show choices verticall
 ;; (setq icomplete-separator "\n")
 ;; (setq icomplete-hide-common-prefix nil)
