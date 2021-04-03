@@ -108,7 +108,10 @@
 ;; (minibuffer-depth-indicate-mode 1)    ;; Mostrar nivel de nesting en minibuffer
 
 ;; (fido-mode t)
-;; (setq-default completion-auto-help nil)
+(setq-default completion-auto-help 'lazy    ;; 'lazy completions on second tab
+	      read-file-name-completion-ignore-case t ;; Ignore case in filename read
+	      )
+
 ;; show choices verticall
 ;; (setq icomplete-separator "\n")
 ;; (setq icomplete-hide-common-prefix nil)
@@ -172,14 +175,18 @@
 	      isearch-lazy-count t
 	      search-ring-max 64
 	      regexp-search-ring-max 64
-	      isearch-yank-on-move 'shift)       ;; Copy text from buffer with meta
-
+	      isearch-yank-on-move 'shift       ;; Copy text from buffer with meta
+	      isearch-wrap-function #'ignore)   ;; No wrap the search.
 (with-eval-after-load 'isearch
   (define-key isearch-mode-map
     [remap isearch-delete-char] #'isearch-del-char)
 
+  (define-key isearch-mode-map (kbd "M-<") #'isearch-beginning-of-buffer)
+  (define-key isearch-mode-map (kbd "M->") #'isearch-end-of-buffer)
+
   (defun my/goto-match-beginning ()
     (when (and isearch-forward
+	       isearch-other-end
 	       (not isearch-mode-end-hook-quit))
       (goto-char isearch-other-end)))
 
