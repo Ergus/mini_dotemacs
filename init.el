@@ -13,7 +13,7 @@
 
 (setq-default auto-revert-verbose nil       ;; not show message when file changes
 	      auto-revert-avoid-polling t)  ;; use save signal
-(run-with-idle-timer 1 nil #'global-auto-revert-mode t)
+(run-with-idle-timer 0.5 nil #'global-auto-revert-mode t)
 
 (setq-default display-line-numbers-widen t) ;; keep line numbers inside a narrow
 (global-display-line-numbers-mode t)	;; line numbers on the left
@@ -117,7 +117,7 @@
 ;; (setq icomplete-hide-common-prefix nil)
 ;; (setq icomplete-in-buffer t)
 
-(run-with-idle-timer 2 nil #'ffap-bindings)
+(run-with-idle-timer 1 nil #'ffap-bindings)
 
 (recentf-mode 1)
 
@@ -192,6 +192,13 @@
 
   (add-hook 'isearch-mode-end-hook #'my/goto-match-beginning))
 
+
+;;__________________________________________________________
+;; imenu
+(setq-default imenu-use-markers nil
+	      imenu-auto-rescan t
+	      imenu-max-item-length 256)
+
 ;;__________________________________________________________
 ;; ssh
 (setq-default compilation-scroll-output 'first-error
@@ -226,11 +233,11 @@
 
 ;; (setq minibuffer-eldef-shorten-default t)
 (add-hook 'minibuffer-setup-hook
-	  (lambda ()
+	  (lambda nil
 	    (setq gc-cons-threshold most-positive-fixnum)))
 
 (add-hook 'minibuffer-exit-hook
-	  (lambda ()
+	  (lambda nil
 	    (setq gc-cons-threshold my/gc-cons-threshold)))
 
 ;;__________________________________________________________
@@ -468,12 +475,12 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 ;;__________________________________________________________
 ;; Transpose
 (global-set-key (kbd "C-M-<left>")
-		(lambda () (interactive) (transpose-words -1)))
+		(lambda nil (interactive) (transpose-words -1)))
 
 (global-set-key (kbd "C-M-<right>") #'transpose-words)
 
 (global-set-key (kbd "M-<left>")
-		(lambda () (interactive) (transpose-chars -1)))
+		(lambda nil (interactive) (transpose-chars -1)))
 
 (global-set-key (kbd "M-<right>") #'transpose-chars)
 
@@ -487,7 +494,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 (global-set-key [remap list-buffers] #'ibuffer)
 (setq-default ibuffer-default-sorting-mode 'alphabetic)
 
-(add-hook 'ibuffer-mode-hook (lambda ()
+(add-hook 'ibuffer-mode-hook (lambda nil
 			       (hl-line-mode 1)))
 
 ;;__________________________________________________________
@@ -500,13 +507,14 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 
 (with-eval-after-load 'dired
+  (require 'dired-x)
+
   (defun my/dired-hook ()
     "My dired hook."
-    (require 'dired-x)
     (put 'dired-find-alternate-file 'disabled nil)
     (define-key dired-mode-map [remap dired-find-file] #'dired-find-alternate-file)  ; was dired-advertised-find-file
     (define-key dired-mode-map [remap dired-up-directory] ; was dired-up-directory
-		(lambda ()
+		(lambda nil
 		  (interactive)
 		  (find-alternate-file ".."))))
 
