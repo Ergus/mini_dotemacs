@@ -150,10 +150,14 @@
 ;;__________________________________________________________
 ;; I don't want confirm exit, not write yes-not either
 (if (< emacs-major-version 28)
-    (defalias 'yes-or-no-p 'y-or-n-p) ;; Reemplazar "yes" por "y" en el prompt
+    (progn
+      (defalias 'yes-or-no-p 'y-or-n-p) ;; Reemplazar "yes" por "y" en el prompt
+      (setq-default isearch-wrap-function #'ignore)
+      )
 
   (setq-default use-short-answers t)  ;; use y-or-n
   (repeat-mode 1)                     ;; Repeat mode
+  (setq-default isearch-wrap-pause nil)
   )
 
 
@@ -176,7 +180,9 @@
 	      search-ring-max 64
 	      regexp-search-ring-max 64
 	      isearch-yank-on-move 'shift       ;; Copy text from buffer with meta
-	      isearch-wrap-function #'ignore)   ;; No wrap the search.
+	      ;; isearch-wrap-function #'ignore ;; Look at the emacs-major-version check
+	      )
+
 (with-eval-after-load 'isearch
   (define-key isearch-mode-map
     [remap isearch-delete-char] #'isearch-del-char)
@@ -184,13 +190,25 @@
   (define-key isearch-mode-map (kbd "M-<") #'isearch-beginning-of-buffer)
   (define-key isearch-mode-map (kbd "M->") #'isearch-end-of-buffer)
 
-  (defun my/goto-match-beginning ()
-    (when (and isearch-forward
-	       isearch-other-end
-	       (not isearch-mode-end-hook-quit))
-      (goto-char isearch-other-end)))
+  (defun my/isearch-exit-other-end ()
+    (interactive)
+    (when isearch-other-end
+      (goto-char isearch-other-end))
+    (call-interactively #'isearch-exit))
 
-  (add-hook 'isearch-mode-end-hook #'my/goto-match-beginning))
+  (define-key isearch-mode-map (kbd "M-RET") #'my/isearch-exit-other-end)
+
+  ;; This is to enable the other-end behavior by default. Will be
+  ;; removed soon after trying the command some time.
+  ;;
+  ;; (defun my/goto-match-beginning ()
+  ;;   (when (and isearch-forward
+  ;; 	       isearch-other-end
+  ;; 	       (not isearch-mode-end-hook-quit))
+  ;;     (goto-char isearch-other-end)))
+
+  ;; (add-hook 'isearch-mode-end-hook #'my/goto-match-beginning)
+  )
 
 
 ;;__________________________________________________________
