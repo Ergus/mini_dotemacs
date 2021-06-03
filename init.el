@@ -96,6 +96,10 @@
 
 	      uniquify-buffer-name-style 'post-forward
 	      switch-to-buffer-obey-display-actions t ;; switching the buffer respects display actions
+
+	      ;; hideif mode
+	      hide-ifdef-shadow t
+	      hide-ifdef-initially t)
 	      )
 
 ;; Vertical window divider
@@ -152,12 +156,15 @@
 (if (< emacs-major-version 28)
     (progn
       (defalias 'yes-or-no-p 'y-or-n-p) ;; Reemplazar "yes" por "y" en el prompt
-      (setq-default isearch-wrap-function #'ignore)
       )
 
-  (setq-default use-short-answers t)  ;; use y-or-n
-  (repeat-mode 1)                     ;; Repeat mode
-  (setq-default isearch-wrap-pause nil)
+  (repeat-mode 1)                      ;; Repeat mode
+  (setq-default use-short-answers t    ;; use y-or-n
+		;; native comp error not in minibuffer
+		native-comp-async-report-warnings-errors 'silent
+		bookmark-menu-confirm-deletion t    ;; ask confirmation to delete bookmark
+		;;bookmark-fontify t                ;; Colorize bookmarked lines with bookmark-face
+		)
   )
 
 
@@ -180,7 +187,6 @@
 	      search-ring-max 64
 	      regexp-search-ring-max 64
 	      isearch-yank-on-move 'shift       ;; Copy text from buffer with meta
-	      ;; isearch-wrap-function #'ignore ;; Look at the emacs-major-version check
 	      )
 
 (with-eval-after-load 'isearch
@@ -197,17 +203,6 @@
     (call-interactively #'isearch-exit))
 
   (define-key isearch-mode-map (kbd "M-RET") #'my/isearch-exit-other-end)
-
-  ;; This is to enable the other-end behavior by default. Will be
-  ;; removed soon after trying the command some time.
-  ;;
-  ;; (defun my/goto-match-beginning ()
-  ;;   (when (and isearch-forward
-  ;; 	       isearch-other-end
-  ;; 	       (not isearch-mode-end-hook-quit))
-  ;;     (goto-char isearch-other-end)))
-
-  ;; (add-hook 'isearch-mode-end-hook #'my/goto-match-beginning)
   )
 
 
@@ -437,6 +432,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
     (c-toggle-auto-newline 1)
     (c-toggle-cpp-indent-to-body 1)
     (c-ms-space-for-alignment-mode 1)
+    (hide-ifdef-mode 1)
     (subword-mode 1)
     (message "Loaded my/c-mode-common"))
 
