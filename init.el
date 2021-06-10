@@ -99,7 +99,7 @@
 
 	      ;; hideif mode
 	      hide-ifdef-shadow t
-	      hide-ifdef-initially t)
+	      hide-ifdef-initially t
 	      )
 
 ;; Vertical window divider
@@ -184,9 +184,12 @@
 	      lazy-highlight-initial-delay 0
 	      isearch-allow-scroll t 	         ;; Permit scroll can be 'unlimited
 	      isearch-lazy-count t
-	      search-ring-max 64
-	      regexp-search-ring-max 64
+	      search-ring-max 256
+	      regexp-search-ring-max 256
 	      isearch-yank-on-move 'shift       ;; Copy text from buffer with meta
+	      isearch-repeat-on-direction-change t ;; Don't go to the other end on direction change
+	      isearch-regexp-lax-whitespace t   ;; swiper like fuzzy search
+	      search-whitespace-regexp ".*?"
 	      )
 
 (with-eval-after-load 'isearch
@@ -451,20 +454,32 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; Move split keybindings
-(define-key ctl-x-map (kbd "4 <left>")  #'windmove-display-left)
-(define-key ctl-x-map (kbd "4 <right>")  #'windmove-display-right)
-(define-key ctl-x-map (kbd "4 <up>")  #'windmove-display-up)
-(define-key ctl-x-map (kbd "4 <down>")  #'windmove-display-down)
+(easy-mmode-defmap ctl-x-0-map
+  `(("0" . delete-window)
+    ([left] . windmove-delete-left)
+    ([right] . windmove-delete-right)
+    ([up] . windmove-delete-up)
+    ([down] . windmove-delete-down))
+  "The base keymap for `highlight changes'.")
+
+(define-key ctl-x-map "0" ctl-x-0-map)
+(which-key-add-key-based-replacements "C-x 0" "windmove-delete")
 
 (define-key ctl-x-map (kbd "<left>")  #'windmove-left)
-(define-key ctl-x-map (kbd "<right>") #'windmove-right)
-(define-key ctl-x-map (kbd "<up>")    #'windmove-up)
+(define-key ctl-x-map (kbd "<right>")  #'windmove-right)
 (define-key ctl-x-map (kbd "<down>")  #'windmove-down)
+(define-key ctl-x-map (kbd "<up>")  #'windmove-up)
+
+(define-key ctl-x-4-map (kbd "<left>")  #'windmove-display-left)
+(define-key ctl-x-4-map (kbd "<right>")  #'windmove-display-right)
+(define-key ctl-x-4-map (kbd "<up>")  #'windmove-display-up)
+(define-key ctl-x-4-map (kbd "<down>")  #'windmove-display-down)
 
 (define-key ctl-x-map (kbd "C-M-<left>")  #'windmove-swap-states-left)
 (define-key ctl-x-map (kbd "C-M-<right>")  #'windmove-swap-states-right)
 (define-key ctl-x-map (kbd "C-M-<down>")  #'windmove-swap-states-down)
 (define-key ctl-x-map (kbd "C-M-<up>")  #'windmove-swap-states-up)
+
 
 ;;__________________________________________________________
 ;; Undo
