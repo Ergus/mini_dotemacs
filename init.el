@@ -40,9 +40,10 @@
 
 (setq-default vc-follow-symlinks t	    ;; Open links not open
 	      ;;tab-always-indent complete  ;; make tab key do indent only
-	      initial-scratch-message ";; Welcome Jimmy!!"
 	      ring-bell-function #'ignore
-	      user-full-name "Jimmy Aguilar Mena"
+	      user-full-name "Ergus"
+	      initial-scratch-message (format ";; Welcome %s!!" user-full-name)
+
 	      inhibit-startup-message t
 	      inhibit-startup-screen t
 	      ;;tab-width 4		    ;; Tabulador a 4
@@ -463,7 +464,6 @@ non-nil and probably assumes that `c-basic-offset' is the same as
   "The base keymap for `highlight changes'.")
 
 (define-key ctl-x-map "0" ctl-x-0-map)
-(which-key-add-key-based-replacements "C-x 0" "windmove-delete")
 
 (define-key ctl-x-map (kbd "<left>")  #'windmove-left)
 (define-key ctl-x-map (kbd "<right>")  #'windmove-right)
