@@ -270,23 +270,27 @@
 ;;__________________________________________________________
 ;;	Seleccionar con el mouse
 
-(xterm-mouse-mode t) ;; mover el cursor al click
-(setq-default mouse-sel-mode t ;; Mouse selection
-	      mouse-scroll-delay 0)
+(unless (or (display-graphic-p)
+	    (string-equal (getenv "TERM") "linux"))
+  (setq-default mouse-sel-mode t          ;; Mouse selection
+		mouse-scroll-delay 0)
 
-(set-mouse-color "white")		;; Flechita del mouse en blanco
+  (xterm-mouse-mode t)			  ;; mover el cursor al click
+  ;; (defun track-mouse (e))
+  (set-cursor-color "white")
+  (set-mouse-color "white")		  ;; Flechita del mouse en blanco
+  (if (fboundp 'mouse-wheel-mode)
+      (progn
+	(setq-default mouse-wheel-scroll-amount '(3             ;; No modifier
+						  ((shift) . 1) ;; in terminal does not work
+						  ((meta) . hscroll)
+						  ((control)))
+		      mouse-wheel-progressive-speed nil)
+	(mouse-wheel-mode t))
 
-;; Mouse scrolling.
-(if (fboundp 'mouse-wheel-mode)
-    (progn
-      (setq-default mouse-wheel-scroll-amount '(5 ((shift) . 1) ((control)))
-		    mouse-wheel-progressive-speed nil)
-      (mouse-wheel-mode t))
-
-  ;; Else set them manually
-  (global-set-key (kbd "<mouse-4>") #'scroll-down-command)
-  (global-set-key (kbd "<mouse-5>") #'scroll-up-command))
-
+    ;; Else set them manually
+    (global-set-key (kbd "<mouse-4>") #'scroll-down-command)
+    (global-set-key (kbd "<mouse-5>") #'scroll-up-command)))
 
 (defun my/scroll-up-command (&optional arg)
   "Scroll by 1 line without prefix ARG."
