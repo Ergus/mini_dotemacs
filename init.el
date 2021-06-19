@@ -342,13 +342,13 @@
   (add-hook 'prog-mode-hook #'my/prog-mode-hook))
 
 (defun my/smart-beginning-of-line ()
-  "Move point to first non-whitespace character or beginning-of-line."
+  "Move point to first non-whitespace character or `beginning-of-line'."
   (interactive)
   (let ((oldpos (point)))
-    (back-to-indentation)
+    (call-interactively 'back-to-indentation)
     (and (<= oldpos (point))
 	 (/= (line-beginning-position) oldpos)
-	 (beginning-of-line))))
+	 (call-interactively 'beginning-of-line))))
 
 (global-set-key [remap move-beginning-of-line] #'my/smart-beginning-of-line)
 
