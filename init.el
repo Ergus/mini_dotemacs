@@ -11,10 +11,6 @@
 
 (setq-default package-quickstart t)
 
-(setq-default auto-revert-verbose nil       ;; not show message when file changes
-	      auto-revert-avoid-polling t)  ;; use save signal
-(run-with-idle-timer 0.5 nil #'global-auto-revert-mode t)
-
 (setq-default display-line-numbers-widen t) ;; keep line numbers inside a narrow
 (global-display-line-numbers-mode t)	;; line numbers on the left
 
@@ -123,10 +119,6 @@
 ;; (setq icomplete-hide-common-prefix nil)
 ;; (setq icomplete-in-buffer t)
 
-(run-with-idle-timer 1 nil #'ffap-bindings)
-
-(recentf-mode 1)
-
 ;;__________________________________________________________
 ;; Config file not here to not track it
 (setq-default custom-file
@@ -166,15 +158,21 @@
 		native-comp-async-report-warnings-errors 'silent
 		bookmark-menu-confirm-deletion t    ;; ask confirmation to delete bookmark
 		;;bookmark-fontify t                ;; Colorize bookmarked lines with bookmark-face
-		)
-  )
+		))
 
 
 ;;__________________________________________________________
 ;; Show paren mode
-(setq-default show-paren-delay 0
+(setq-default auto-revert-verbose nil       ;; not show message when file changes
+	      auto-revert-avoid-polling t   ;; use save signal
+	      show-paren-delay 0            ;; Highlight couple parenthesis
 	      blink-matching-paren nil)
-(show-paren-mode t)	  ;; Highlight couple parenthesis
+
+(run-with-idle-timer 1 nil (lambda ()
+			     (global-auto-revert-mode t)
+			     (show-paren-mode t)
+			     (ffap-bindings)
+			     (recentf-mode 1)))
 
 ;; Use cycle-spacing instead of just-one-space on M-SPC
 (global-set-key [remap just-one-space] #'cycle-spacing)
@@ -250,13 +248,9 @@
 ;; minibuffers
 
 ;; (setq minibuffer-eldef-shorten-default t)
-(add-hook 'minibuffer-setup-hook
-	  (lambda nil
-	    (setq gc-cons-threshold most-positive-fixnum)))
+(add-hook 'minibuffer-setup-hook #'my/unset-gc)
 
-(add-hook 'minibuffer-exit-hook
-	  (lambda nil
-	    (setq gc-cons-threshold my/gc-cons-threshold)))
+(add-hook 'minibuffer-exit-hook #'my/restore-gc)
 
 ;;__________________________________________________________
 ;; gdb rectangles
@@ -490,16 +484,32 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; Undo
-(global-set-key [remap undo] #'undo-only)
+(global-set-key (kbd "C-_") #'undo-only)
+(global-set-key (kbd "C-/") #'undo-only)
 (global-set-key (kbd "C-M-_") #'undo-redo)
+(global-set-key (kbd "C-M-/") #'undo-redo)
 
+(with-eval-after-load 'repeat
+  (defvar undo-redo-repeat-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map "u" #'undo-only)
+      (define-key map "r" #'undo-redo)
+      (define-key map "U" #'undo)
+      map)
+    "Keymap to repeat undo-redo key sequences.  Used in `repeat-mode'.")
+  (put 'undo-only 'repeat-map 'undo-redo-repeat-map)
+  (put 'undo-redo 'repeat-map 'undo-redo-repeat-map)
+  (put 'undo 'repeat-map 'undo-redo-repeat-map))
 
 ;;__________________________________________________________
 ;; Winner mode
+;; winner
 (setq-default winner-dont-bind-my-keys t)
 (winner-mode t)
-(define-key ctl-x-map (kbd "w u")  #'winner-undo)
-(define-key ctl-x-map (kbd "w r")  #'winner-redo)
+(define-key ctl-x-map "wu"  #'winner-undo)
+(define-key ctl-x-map "wr"  #'winner-redo)
+(which-key-add-key-based-replacements "C-x w" "winner")
+
 
 ;;__________________________________________________________
 ;; Eldoc
