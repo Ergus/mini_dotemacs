@@ -508,7 +508,6 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 (winner-mode t)
 (define-key ctl-x-map "wu"  #'winner-undo)
 (define-key ctl-x-map "wr"  #'winner-redo)
-(which-key-add-key-based-replacements "C-x w" "winner")
 
 
 ;;__________________________________________________________
