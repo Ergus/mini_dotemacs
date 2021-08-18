@@ -158,7 +158,10 @@
 		native-comp-async-report-warnings-errors 'silent
 		bookmark-menu-confirm-deletion t    ;; ask confirmation to delete bookmark
 		;;bookmark-fontify t                ;; Colorize bookmarked lines with bookmark-face
-		))
+		)
+  (fido-vertical-mode 1)
+  (context-menu-mode 1)
+  )
 
 
 ;;__________________________________________________________
