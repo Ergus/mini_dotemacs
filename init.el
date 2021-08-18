@@ -105,20 +105,6 @@
                         'vertical-border
                         (make-glyph-code ?\u2502))
 
-;; These two must be enabled/disabled together
-;; (setq enable-recursive-minibuffers t) ;; Enable nesting in minibuffer
-;; (minibuffer-depth-indicate-mode 1)    ;; Mostrar nivel de nesting en minibuffer
-
-;; (fido-mode t)
-(setq-default completion-auto-help 'lazy    ;; 'lazy completions on second tab
-	      read-file-name-completion-ignore-case t ;; Ignore case in filename read
-	      )
-
-;; show choices verticall
-;; (setq icomplete-separator "\n")
-;; (setq icomplete-hide-common-prefix nil)
-;; (setq icomplete-in-buffer t)
-
 ;;__________________________________________________________
 ;; Config file not here to not track it
 (setq-default custom-file
@@ -147,19 +133,23 @@
 
 ;;__________________________________________________________
 ;; I don't want confirm exit, not write yes-not either
+(setq-default read-file-name-completion-ignore-case t) ;; Ignore case in filename read
+
 (if (< emacs-major-version 28)
     (progn
       (defalias 'yes-or-no-p 'y-or-n-p) ;; Reemplazar "yes" por "y" en el prompt
-      )
+      (setq-default completion-auto-help 'lazy))
 
   ;; Functionalities for emacs >= 28
-  (repeat-mode 1)                      ;; Repeat mode
   (setq-default use-short-answers t    ;; use y-or-n
 		;; native comp error not in minibuffer
 		native-comp-async-report-warnings-errors 'silent
 		bookmark-menu-confirm-deletion t    ;; ask confirmation to delete bookmark
 		;;bookmark-fontify t                ;; Colorize bookmarked lines with bookmark-face
+		completion-auto-help nil            ;; 'lazy completions on second tab
 		)
+
+  (repeat-mode 1)                      ;; Repeat mode
   (fido-vertical-mode 1)
   (context-menu-mode 1)
   )
