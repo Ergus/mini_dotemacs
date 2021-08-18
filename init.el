@@ -152,6 +152,7 @@
       (defalias 'yes-or-no-p 'y-or-n-p) ;; Reemplazar "yes" por "y" en el prompt
       )
 
+  ;; Functionalities for emacs >= 28
   (repeat-mode 1)                      ;; Repeat mode
   (setq-default use-short-answers t    ;; use y-or-n
 		;; native comp error not in minibuffer
@@ -551,22 +552,20 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 	      dired-recursive-deletes 'top  ;; Always ask recursive delete
 	      dired-dwim-target t	   ;; Copy in split mode with p
 	      dired-auto-revert-buffer t
-	      dired-listing-switches "-alh")
+	      dired-listing-switches "-alh"
+	      dired-kill-when-opening-new-dired-buffer t ;; only works for emacs > 28
+	      )
 
-
-(with-eval-after-load 'dired
-  (require 'dired-x)
-
-  (defun my/dired-hook ()
-    "My dired hook."
+;; Old alternative for dired-kill-when-opening-new-dired-buffer option.
+(when (< emacs-major-version 28)
+  (with-eval-after-load 'dired
+    (require 'dired-x)
     (put 'dired-find-alternate-file 'disabled nil)
     (define-key dired-mode-map [remap dired-find-file] #'dired-find-alternate-file)  ; was dired-advertised-find-file
     (define-key dired-mode-map [remap dired-up-directory] ; was dired-up-directory
-		(lambda nil
-		  (interactive)
-		  (find-alternate-file ".."))))
-
-  (add-hook 'dired-load-hook #'my/dired-hook))
+      (lambda nil
+	(interactive)
+	(find-alternate-file "..")))))
 
 (provide 'init)
 ;;; init.el ends here
