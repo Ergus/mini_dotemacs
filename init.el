@@ -279,8 +279,8 @@
 	(mouse-wheel-mode t))
 
     ;; Else set them manually
-    (global-set-key (kbd "<mouse-4>") #'scroll-down-command)
-    (global-set-key (kbd "<mouse-5>") #'scroll-up-command)))
+    (global-set-key [mouse-4] #'scroll-down-command)
+    (global-set-key [mouse-5] #'scroll-up-command)))
 
 (defun my/scroll-up-command (&optional arg)
   "Scroll by 1 line without prefix ARG."
@@ -487,8 +487,10 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 (with-eval-after-load 'repeat
   (defvar undo-redo-repeat-map
     (let ((map (make-sparse-keymap)))
-      (define-key map "u" #'undo-only)
-      (define-key map "r" #'undo-redo)
+      (define-key map "_" #'undo-only)
+      (define-key map "/" #'undo-only)
+      (define-key map "M-_" #'undo-redo)
+      (define-key map "M-/" #'undo-redo)
       (define-key map "U" #'undo)
       map)
     "Keymap to repeat undo-redo key sequences.  Used in `repeat-mode'.")
