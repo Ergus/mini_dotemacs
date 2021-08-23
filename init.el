@@ -227,8 +227,8 @@
 (with-eval-after-load 'term
   (defun my/term-mode-hook ()
     "My term mode hook."
-    (setq-local mouse-yank-at-point t)
-    (setq-local transient-mark-mode nil)
+    (setq-local mouse-yank-at-point t
+		transient-mark-mode nil)
     (display-fill-column-indicator-mode -1)
     (auto-fill-mode -1))
 
