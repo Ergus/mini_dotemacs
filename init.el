@@ -479,21 +479,17 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; Undo
-(global-set-key (kbd "C-_") #'undo-only)
-(global-set-key (kbd "C-/") #'undo-only)
-(global-set-key (kbd "C-M-_") #'undo-redo)
-(global-set-key (kbd "C-M-/") #'undo-redo)
+
+;; (global-set-key [remap undo] #'undo-only)
 
 (with-eval-after-load 'repeat
   (defvar undo-redo-repeat-map
     (let ((map (make-sparse-keymap)))
-      (define-key map "_" #'undo-only)
-      (define-key map "/" #'undo-only)
-      (define-key map "M-_" #'undo-redo)
-      (define-key map "M-/" #'undo-redo)
-      (define-key map "U" #'undo)
+      (define-key map "u" #'undo-only)
+      (define-key map "r" #'undo-redo)
+      (define-key map (kbd "C-u") #'undo)
       map)
-    "Keymap to repeat undo-redo key sequences.  Used in `repeat-mode'.")
+    "Keymap to repeat undo-redo key sequences.")
   (put 'undo-only 'repeat-map 'undo-redo-repeat-map)
   (put 'undo-redo 'repeat-map 'undo-redo-repeat-map)
   (put 'undo 'repeat-map 'undo-redo-repeat-map))
@@ -503,22 +499,19 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 ;; winner
 (setq-default winner-dont-bind-my-keys t)
 (winner-mode t)
-(define-key ctl-x-4-map (kbd "_")  #'winner-undo)
-(define-key ctl-x-4-map (kbd "/")  #'winner-undo)
-(define-key ctl-x-4-map (kbd "M-_")  #'winner-redo)
-(define-key ctl-x-4-map (kbd "M-/")  #'winner-redo)
+(define-key ctl-x-4-map "u"  #'winner-undo)
+(define-key ctl-x-4-map "r"  #'winner-redo)
 
 (with-eval-after-load 'repeat
   (defvar winner-repeat-map
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "_") #'winner-undo)
-      (define-key map (kbd "/") #'winner-undo)
-      (define-key map (kbd "M-_") #'winner-redo)
-      (define-key map (kbd "M-/") #'winner-redo)
+      (define-key map "u" #'winner-undo)
+      (define-key map "r" #'winner-redo)
       map)
     "Keymap to repeat winner commands.")
   (put 'winner-undo 'repeat-map 'winner-repeat-map)
   (put 'winner-redo 'repeat-map 'winner-repeat-map))
+
 ;;__________________________________________________________
 ;; Eldoc
 
