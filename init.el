@@ -501,18 +501,18 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 ;; winner
 (setq-default winner-dont-bind-my-keys t)
 (winner-mode t)
-(define-key ctl-x-4-map (kbd "C-_")  #'winner-undo)
-(define-key ctl-x-4-map (kbd "C-/")  #'winner-undo)
-(define-key ctl-x-4-map (kbd "C-M-_")  #'winner-redo)
-(define-key ctl-x-4-map (kbd "C-M-/")  #'winner-redo)
+(define-key ctl-x-4-map (kbd "_")  #'winner-undo)
+(define-key ctl-x-4-map (kbd "/")  #'winner-undo)
+(define-key ctl-x-4-map (kbd "M-_")  #'winner-redo)
+(define-key ctl-x-4-map (kbd "M-/")  #'winner-redo)
 
 (with-eval-after-load 'repeat
   (defvar winner-repeat-map
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "C-_") #'winner-undo)
-      (define-key map (kbd "C-/") #'winner-undo)
-      (define-key map (kbd "C-M-_") #'winner-redo)
-      (define-key map (kbd "C-M-/") #'winner-redo)
+      (define-key map (kbd "_") #'winner-undo)
+      (define-key map (kbd "/") #'winner-undo)
+      (define-key map (kbd "M-_") #'winner-redo)
+      (define-key map (kbd "M-/") #'winner-redo)
       map)
     "Keymap to repeat winner commands.")
   (put 'winner-undo 'repeat-map 'winner-repeat-map)
