@@ -57,11 +57,13 @@
 	      line-move-visual nil
 	      backward-delete-char-untabify-method nil ;; Don't untabify on backward delete
 
-	      ;; split-width-threshold 160  ;; Limite para split vertical
+	      ;; split-width-threshold 160    ;; Limite para split vertical
 	      ;; kill-whole-line t
-	      ;; load-prefer-newer t
-	      ;; mark-even-if-inactive nil	    ;; no mark no region
-	      next-screen-context-lines 5           ;; Lines of continuity when scrolling
+	      load-prefer-newer t
+	      ;; mark-even-if-inactive nil    ;; no mark no region
+	      mark-ring-max 128             ;; Max number of marks in the ring
+	      set-mark-command-repeat-pop t ;; Repeat pop mark with C-SPC
+	      next-screen-context-lines 5   ;; Lines of continuity when scrolling
 	      fast-but-imprecise-scrolling t
 	      scroll-error-top-bottom t	    ;; Move cursor before error scroll
 	      scroll-preserve-screen-position t	  ;; Cursor keeps screen pos
