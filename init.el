@@ -165,7 +165,9 @@
 
 (run-with-idle-timer 1 nil (lambda ()
 			     (global-auto-revert-mode t)
-			     (show-paren-mode t)
+			     (if (< emacs-major-version 28)
+				 (show-paren-mode t)
+			       (show-paren-local-mode t))
 			     (ffap-bindings)
 			     (recentf-mode 1)))
 
