@@ -174,6 +174,10 @@
 ;; Use cycle-spacing instead of just-one-space on M-SPC
 (global-set-key [remap just-one-space] #'cycle-spacing)
 
+;; profiler
+(add-hook 'profiler-report-mode-hook #'hl-line-mode)
+
+
 ;;__________________________________________________________
 ;; Isearch
 
