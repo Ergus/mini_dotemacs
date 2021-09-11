@@ -165,9 +165,7 @@
 
 (run-with-idle-timer 1 nil (lambda ()
 			     (global-auto-revert-mode t)
-			     (if (< emacs-major-version 28)
-				 (show-paren-mode t)
-			       (show-paren-local-mode t))
+			     (show-paren-mode t)
 			     (ffap-bindings)
 			     (recentf-mode 1)))
 
@@ -273,8 +271,7 @@
 	      ispell-quietly t)
 
 ;;__________________________________________________________
-;;	Seleccionar con el mouse
-
+;; xterm mouse
 (unless (or (display-graphic-p)
 	    (string-equal (getenv "TERM") "linux"))
   (setq-default mouse-sel-mode t          ;; Mouse selection
@@ -309,7 +306,6 @@
 
 (global-set-key [remap scroll-up-command] #'my/scroll-up-command)
 (global-set-key [remap scroll-down-command] #'my/scroll-down-command)
-
 ;;__________________________________________________________
 ;; Ediff
 (setq-default ediff-window-setup-function #'ediff-setup-windows-plain
