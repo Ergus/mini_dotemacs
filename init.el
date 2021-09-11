@@ -177,24 +177,33 @@
 ;;__________________________________________________________
 ;; Isearch
 
-(setq-default search-nonincremental-instead nil  ;; No incremental if enter & empty
+(setq-default search-nonincremental-instead nil    ;; No incremental if enter & empty
 	      lazy-highlight-initial-delay 0
-	      isearch-allow-scroll t 	         ;; Permit scroll can be 'unlimited
+	      isearch-allow-scroll t 	           ;; Permit scroll can be 'unlimited
 	      isearch-lazy-count t
 	      search-ring-max 256
 	      regexp-search-ring-max 256
-	      isearch-yank-on-move 'shift       ;; Copy text from buffer with meta
+	      isearch-yank-on-move 'shift          ;; Copy text from buffer with meta
+	      ;; isearch-wrap-function #'ignore     ;; Look at the emacs-major-version check
+	      ;; isearch-wrap-pause t               ;; Disable wrapping nil.
 	      isearch-repeat-on-direction-change t ;; Don't go to the other end on direction change
-	      isearch-regexp-lax-whitespace t   ;; swiper like fuzzy search
+	      isearch-regexp-lax-whitespace t      ;; swiper like fuzzy search
 	      search-whitespace-regexp ".*?"
+	      ;; Emacs version > 28
+	      lazy-highlight-no-delay-length 1     ;; use this instead of lazy-highlight-initial-delay
+	      isearch-allow-motion t
+	      ;; isearch-motion-changes-direction t
 	      )
 
 (with-eval-after-load 'isearch
   (define-key isearch-mode-map
     [remap isearch-delete-char] #'isearch-del-char)
 
-  (define-key isearch-mode-map (kbd "M-<") #'isearch-beginning-of-buffer)
-  (define-key isearch-mode-map (kbd "M->") #'isearch-end-of-buffer)
+  (when (< emacs-major-version 28)
+    ;; On emacs >= 28 isearch-allow-motion does this, so it is not needed.
+    (define-key isearch-mode-map (kbd "M-<") #'isearch-beginning-of-buffer)
+    (define-key isearch-mode-map (kbd "M->") #'isearch-end-of-buffer)
+    )
 
   (defun my/isearch-exit-other-end ()
     (interactive)
