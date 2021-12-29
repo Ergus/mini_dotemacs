@@ -315,16 +315,18 @@
 
 ;;__________________________________________________________
 ;; smerge
-(setq-default smerge-diff-buffer-name "*smerge-diff*")
+(setq-default smerge-diff-buffer-name "*smerge-diff*"
+	      smerge-command-prefix "\C-cs")
 
 (defun my/enable-smerge-maybe ()
-    "Auto-enable `smerge-mode' when merge conflict is detected."
-    (save-excursion
-      (goto-char (point-min))
-      (when (re-search-forward "^<<<<<<< " nil t)
-	(smerge-mode 1))))
+  "Auto-enable `smerge-mode' when merge conflict is detected."
+  (save-excursion
+    (goto-char (point-min))
+    (when (re-search-forward "^<<<<<<< " nil t)
+      (smerge-mode 1))))
 
-(add-hook 'find-file-hook #'my/prog-mode-hook)
+
+(add-hook 'find-file-hook #'my/enable-smerge-maybe)
 
 ;;__________________________________________________________
 ;; My program's mode hooks
