@@ -496,17 +496,6 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 (global-set-key (kbd "C-M-/") #'undo-redo)  ;; for gui in tty "C-M-/" == "C-M-_"
 
-(with-eval-after-load 'repeat
-  (easy-mmode-defmap undo-redo-repeat-map
-    `(("u" . undo-only)
-      ("r" . undo-redo)
-      (,(kbd "C-u") . undo))
-    "Keymap to repeat undo-redo key sequences.")
-
-  (put 'undo-only 'repeat-map 'undo-redo-repeat-map)
-  (put 'undo-redo 'repeat-map 'undo-redo-repeat-map)
-  (put 'undo 'repeat-map 'undo-redo-repeat-map))
-
 ;;__________________________________________________________
 ;; Winner mode
 ;; winner
@@ -522,8 +511,8 @@ non-nil and probably assumes that `c-basic-offset' is the same as
       (define-key map "r" #'winner-redo)
       map)
     "Keymap to repeat winner commands.")
-  (put 'winner-undo 'repeat-map 'winner-repeat-map)
-  (put 'winner-redo 'repeat-map 'winner-repeat-map))
+  (put #'winner-undo 'repeat-map 'winner-repeat-map)
+  (put #'winner-redo 'repeat-map 'winner-repeat-map))
 
 ;;__________________________________________________________
 ;; Eldoc
