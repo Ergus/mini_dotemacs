@@ -282,13 +282,7 @@
   (set-cursor-color "white")
   (set-mouse-color "white")		  ;; Flechita del mouse en blanco
   (if (fboundp 'mouse-wheel-mode)
-      (progn
-	(setq-default mouse-wheel-scroll-amount '(3             ;; No modifier
-						  ((shift) . 1) ;; in terminal does not work
-						  ((meta) . hscroll)
-						  ((control)))
-		      mouse-wheel-progressive-speed nil)
-	(mouse-wheel-mode t))
+      (mouse-wheel-mode t)
 
     ;; Else set them manually
     (global-set-key [mouse-4] #'scroll-down-command)
@@ -474,21 +468,20 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 (define-key ctl-x-map "0" ctl-x-0-map)
 
-(define-key ctl-x-map [left]  #'windmove-left)
-(define-key ctl-x-map [right]  #'windmove-right)
-(define-key ctl-x-map [down]  #'windmove-down)
-(define-key ctl-x-map [up]  #'windmove-up)
+(global-set-key [M-left] #'windmove-left)
+(global-set-key [M-right] #'windmove-right)
+(global-set-key [M-down] #'windmove-down)
+(global-set-key [M-up] #'windmove-up)
 
-(define-key ctl-x-4-map [left]  #'windmove-display-left)
-(define-key ctl-x-4-map [right]  #'windmove-display-right)
-(define-key ctl-x-4-map [up]  #'windmove-display-up)
-(define-key ctl-x-4-map [down]  #'windmove-display-down)
+(global-set-key [M-S-left] #'windmove-swap-states-left)
+(global-set-key [M-S-right] #'windmove-swap-states-right)
+(global-set-key [M-S-down] #'windmove-swap-states-down)
+(global-set-key [M-S-up] #'windmove-swap-states-up)
 
-(define-key ctl-x-map [M-left]  #'windmove-swap-states-left)
-(define-key ctl-x-map [M-right]  #'windmove-swap-states-right)
-(define-key ctl-x-map [M-down]  #'windmove-swap-states-down)
-(define-key ctl-x-map [M-up]  #'windmove-swap-states-up)
-
+(define-key ctl-x-4-map [left] #'windmove-display-left)
+(define-key ctl-x-4-map [right] #'windmove-display-right)
+(define-key ctl-x-4-map [up] #'windmove-display-up)
+(define-key ctl-x-4-map [down] #'windmove-display-down)
 
 ;;__________________________________________________________
 ;; Undo
