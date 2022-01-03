@@ -139,7 +139,8 @@
 (if (< emacs-major-version 28)
     (progn
       (defalias 'yes-or-no-p 'y-or-n-p) ;; Reemplazar "yes" por "y" en el prompt
-      (setq-default completion-auto-help 'lazy))
+      (setq-default completion-auto-help 'lazy) ;; already default
+      )
 
   ;; Functionalities for emacs >= 28
   (setq-default use-short-answers t    ;; use y-or-n
@@ -148,6 +149,7 @@
 		bookmark-menu-confirm-deletion t    ;; ask confirmation to delete bookmark
 		;;bookmark-fontify t                ;; Colorize bookmarked lines with bookmark-face
 		completion-auto-help nil            ;; 'lazy completions on second tab
+		repeat-check-key nil
 		)
 
   (repeat-mode 1)                      ;; Repeat mode
