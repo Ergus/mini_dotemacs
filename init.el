@@ -532,10 +532,18 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; Transpose
-(global-set-key [C-M-left] (lambda nil (interactive) (transpose-words -1)))
-(global-set-key [C-M-right] #'transpose-words)
-(global-set-key [M-left] (lambda nil (interactive) (transpose-chars -1)))
-(global-set-key [M-right] #'transpose-chars)
+(defun my/untranspose-words (arg)
+  (interactive "*p")
+  (transpose-words (- arg)))
+
+(defun my/untranspose-chars (arg)
+  (interactive "*p")
+  (transpose-chars (- arg)))
+
+(define-key ctl-x-map [C-M-left] #'my/untranspose-words)
+(define-key ctl-x-map [C-M-right] #'transpose-words)
+(define-key ctl-x-map [M-left] #'my/untranspose-chars)
+(define-key ctl-x-map [M-right] #'transpose-chars)
 
 ;;__________________________________________________________
 ;; Abbrev mode
