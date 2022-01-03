@@ -272,6 +272,12 @@
 
 ;;__________________________________________________________
 ;; xterm mouse
+(setq-default mouse-wheel-scroll-amount '(1             ;; No modifier
+					  ((shift) . 3) ;; in terminal does not work
+					  ((meta) . hscroll)
+					  ((control)))
+	      mouse-wheel-progressive-speed nil)
+
 (unless (or (display-graphic-p)
 	    (string-equal (getenv "TERM") "linux"))
   (setq-default mouse-sel-mode t          ;; Mouse selection
@@ -486,16 +492,15 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 ;;__________________________________________________________
 ;; Undo
 
-;; (global-set-key [remap undo] #'undo-only)
+(global-set-key (kbd "C-M-/") #'undo-redo)  ;; for gui in tty "C-M-/" == "C-M-_"
 
 (with-eval-after-load 'repeat
-  (defvar undo-redo-repeat-map
-    (let ((map (make-sparse-keymap)))
-      (define-key map "u" #'undo-only)
-      (define-key map "r" #'undo-redo)
-      (define-key map (kbd "C-u") #'undo)
-      map)
+  (easy-mmode-defmap undo-redo-repeat-map
+    `(("u" . undo-only)
+      ("r" . undo-redo)
+      (,(kbd "C-u") . undo))
     "Keymap to repeat undo-redo key sequences.")
+
   (put 'undo-only 'repeat-map 'undo-redo-repeat-map)
   (put 'undo-redo 'repeat-map 'undo-redo-repeat-map)
   (put 'undo 'repeat-map 'undo-redo-repeat-map))
