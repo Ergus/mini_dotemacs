@@ -296,18 +296,8 @@
     (global-set-key [mouse-4] #'scroll-down-command)
     (global-set-key [mouse-5] #'scroll-up-command)))
 
-(defun my/scroll-up-command (&optional arg)
-  "Scroll by 1 line without prefix ARG."
-  (interactive "^p")
-  (scroll-up-command arg))
-
-(defun my/scroll-down-command (&optional arg)
-  "Scroll by 1 line without prefix ARG."
-  (interactive "^p")
-  (scroll-down-command arg))
-
-(global-set-key [remap scroll-up-command] #'my/scroll-up-command)
-(global-set-key [remap scroll-down-command] #'my/scroll-down-command)
+(global-set-key [remap scroll-up-command] #'scroll-up-line)
+(global-set-key [remap scroll-down-command] #'scroll-down-line)
 ;;__________________________________________________________
 ;; Ediff
 (setq-default ediff-window-setup-function #'ediff-setup-windows-plain
@@ -456,11 +446,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 (with-eval-after-load 'sh-script
   (setq sh-basic-offset 'tab-width)
-  (defun my/sh-mode-hook ()
-    "My term mode hook."
-    (setq-local indent-tabs-mode t))
-
-  (add-hook 'sh-mode-hook #'my/sh-mode-hook))
+  (add-hook 'sh-mode-hook (lambda nil (setq-local indent-tabs-mode t))))
 
 ;;__________________________________________________________
 ;; Move split keybindings
@@ -523,17 +509,9 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; Transpose
-(defun my/untranspose-words (arg)
-  (interactive "*p")
-  (transpose-words (- arg)))
-
-(defun my/untranspose-chars (arg)
-  (interactive "*p")
-  (transpose-chars (- arg)))
-
-(define-key ctl-x-map [C-M-left] #'my/untranspose-words)
+(define-key ctl-x-map [C-M-left] (lambda (arg) (interactive "*p") (transpose-words (- arg))))
 (define-key ctl-x-map [C-M-right] #'transpose-words)
-(define-key ctl-x-map [M-left] #'my/untranspose-chars)
+(define-key ctl-x-map [M-left] (lambda (arg) (interactive "*p") (transpose-chars (- arg))))
 (define-key ctl-x-map [M-right] #'transpose-chars)
 
 ;;__________________________________________________________
