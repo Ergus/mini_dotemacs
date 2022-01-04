@@ -327,7 +327,6 @@
     (when (re-search-forward "^<<<<<<< " nil t)
       (smerge-mode 1))))
 
-
 (add-hook 'find-file-hook #'my/enable-smerge-maybe)
 
 ;;__________________________________________________________
@@ -399,15 +398,10 @@ non-nil and probably assumes that `c-basic-offset' is the same as
     (remove-hook 'c-special-indent-hook #'ms-space-for-alignment-hook t)))
 
 ;;====================
-
-;; (defun my/c-semi&comma ()
-;;   (assq 'class-close c-syntactic-context)
-;;   )
-
-(setq-default c-default-style
-	      '((java-mode . "java")
-		(awk-mode . "awk")
-		(other . "mylinux")))
+;; cc-mode
+(setq-default c-default-style '((java-mode . "java")
+				(awk-mode . "awk")
+				(other . "mylinux")))
 
 (with-eval-after-load 'cc-mode
   (c-add-style "mylinux"
@@ -441,13 +435,12 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 				  )))
 
   (defun my/c-mode-common-hook ()
-    "My hook for C and C++."
+    "my/c-mode-common common."
     (c-toggle-auto-newline 1)
     (c-toggle-cpp-indent-to-body 1)
     (c-ms-space-for-alignment-mode 1)
     (hide-ifdef-mode 1)
-    (subword-mode 1)
-    (message "Loaded my/c-mode-common"))
+    (subword-mode 1))
 
   (add-hook 'c-mode-common-hook #'my/c-mode-common-hook))
 
@@ -540,7 +533,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 ;; dired
 (setq-default dired-recursive-copies 'top   ;; Always ask recursive copy
 	      dired-recursive-deletes 'top  ;; Always ask recursive delete
-	      dired-dwim-target t	   ;; Copy in split mode with p
+	      dired-dwim-target t	    ;; Copy in split mode with p
 	      dired-auto-revert-buffer t
 	      dired-listing-switches "-alh"
 	      dired-kill-when-opening-new-dired-buffer t ;; only works for emacs > 28
