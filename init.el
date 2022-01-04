@@ -453,11 +453,11 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; sh mode
+(defvaralias 'sh-basic-offset 'tab-width)
 
-(with-eval-after-load 'sh-script
-  (setq sh-basic-offset 'tab-width)
-  (add-hook 'sh-mode-hook (lambda nil (setq-local indent-tabs-mode t))))
-
+(add-hook 'sh-mode-hook (lambda nil
+			  (setq-local indent-tabs-mode t
+				      tab-width 4)))
 ;;__________________________________________________________
 ;; Move split keybindings
 (setq-default windmove-display-no-select t)
