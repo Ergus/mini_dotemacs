@@ -48,12 +48,11 @@
 	      make-backup-files nil	    ;; Sin copias de seguridad
 	      create-lockfiles nil	    ;; No lock files, good for tramp
 	      visible-bell nil		    ;; Flash the screen (def)
-	      display-line-numbers-width 4  ;; Minimum line number width
 	      confirm-kill-processes nil    ;; no ask kill processes on exit
-	      read-key-delay 0.01
+	      ;; read-key-delay 0.01           ;; already default
 	      recenter-redisplay nil
 	      ;;recenter-positions '(top middle bottom)
-	      line-move-visual nil
+	      ;; line-move-visual nil
 	      backward-delete-char-untabify-method nil ;; Don't untabify on backward delete
 
 	      ;; split-width-threshold 160    ;; Limite para split vertical
@@ -81,21 +80,31 @@
 	      auto-save-default nil         ;; No autosave
 	      auto-save-list-file-name nil
 	      ;; minibuffer interaction
-	      minibuffer-message-timeout 1
+	      minibuffer-message-timeout 1  ;; default 2
 	      read-quoted-char-radix 16     ;; Read number of chars with C-q
-	      kill-buffer-query-functions nil
+	      ;; kill-buffer-query-functions nil
+	      kill-do-not-save-duplicates t   ;; duplicate kill ring entries
 
 	      eval-expression-print-length nil
 	      eval-expression-print-level nil
-	      suggest-key-bindings t
+	      suggest-key-bindings t          ;; enable show keybindings in completions
+
+	      truncate-lines t
+	      save-interprogram-paste-before-kill t ;; Save clipboard before replace
+	      minibuffer-eldef-shorten-default t
 
 	      ;; M-x show context-local commands
 	      read-extended-command-predicate #'command-completion-default-include-p
+	      completions-detailed t              ;; show more detailed completions
 	      goto-line-history-local t         ;; Buffer local goto-line history
 
 	      uniquify-buffer-name-style 'post-forward
 	      switch-to-buffer-obey-display-actions t ;; switching the buffer respects display actions
+	      bookmark-menu-confirm-deletion t    ;; ask confirmation to delete bookmark
+	      bookmark-fontify t                  ;; Colorize bookmarked lines with bookmark-face
 
+	      translate-upper-case-key-bindings nil ;; Make keybindings case sensitive
+	      outline-minor-mode-use-buttons t      ;; Use buttons to hide/show outlines
 	      ;; hideif mode
 	      hide-ifdef-shadow t
 	      hide-ifdef-initially t
