@@ -284,10 +284,11 @@
 ;;__________________________________________________________
 ;; xterm mouse
 (setq-default mouse-wheel-scroll-amount '(1             ;; No modifier
-					  ((shift) . 3) ;; in terminal does not work
+					  ((control) . 5)
 					  ((meta) . hscroll)
-					  ((control)))
-	      mouse-wheel-progressive-speed nil)
+					  ((shift) . text-scale)) ;; in terminal does not work
+	      mouse-wheel-progressive-speed nil
+	      mouse-wheel-tilt-scroll t) ;; horizontal scrolling with touchpad
 
 (unless (or (display-graphic-p)
 	    (string-equal (getenv "TERM") "linux"))
