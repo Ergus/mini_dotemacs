@@ -333,18 +333,18 @@
 ;;__________________________________________________________
 ;; My program's mode hooks
 
-(with-eval-after-load 'prog-mode
-  (defun my/prog-mode-hook ()
-    "Some hooks only for prog mode."
-    ;;(electric-indent-mode t)	;; On by default
-    (electric-pair-local-mode 1)	;; Autoannadir parentesis
-    (which-function-mode 1)	;; Shows the function in spaceline
+;; elec-pair
+(eval-after-load 'elec-pair
+  '(add-to-list 'electric-pair-pairs '(?< . ?>) t))
 
-    ;;(define-key global-map (kbd "RET") 'newline-and-indent)
-    ;;(electric-indent-local-mode t)
-    (setq-local show-trailing-whitespace t))
+(defun my/common-hook ()
+  "Enable electric-pair-local-mode"
+  (setq-local show-trailing-whitespace t)
+  (electric-pair-local-mode 1))
 
-  (add-hook 'prog-mode-hook #'my/prog-mode-hook))
+(add-hook 'prog-mode-hook #'my/common-hook)
+(add-hook 'text-mode-hook #'my/common-hook)
+(add-hook 'conf-mode-hook #'my/common-hook)
 
 (defun my/smart-beginning-of-line ()
   "Move point to first non-whitespace character or `beginning-of-line'."
