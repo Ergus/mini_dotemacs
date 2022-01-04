@@ -172,7 +172,8 @@
 (setq-default auto-revert-verbose nil       ;; not show message when file changes
 	      auto-revert-avoid-polling t   ;; use save signal
 	      show-paren-delay 0            ;; Highlight couple parenthesis
-	      blink-matching-paren nil)
+	      blink-matching-paren nil
+	      recentf-auto-cleanup 10)      ;; don't clean recentf on startup, but when idle
 
 (run-with-idle-timer 1 nil (lambda ()
 			     (global-auto-revert-mode t)
