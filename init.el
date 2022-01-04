@@ -283,28 +283,24 @@
 
 ;;__________________________________________________________
 ;; xterm mouse
-(setq-default mouse-wheel-scroll-amount '(1             ;; No modifier
-					  ((control) . 5)
-					  ((meta) . hscroll)
-					  ((shift) . text-scale)) ;; in terminal does not work
-	      mouse-wheel-progressive-speed nil
-	      mouse-wheel-tilt-scroll t) ;; horizontal scrolling with touchpad
-
 (unless (or (display-graphic-p)
 	    (string-equal (getenv "TERM") "linux"))
-  (setq-default mouse-sel-mode t          ;; Mouse selection
-		mouse-scroll-delay 0)
+  (xterm-mouse-mode t))
 
-  (xterm-mouse-mode t)			  ;; mover el cursor al click
-  ;; (defun track-mouse (e))
-  (set-cursor-color "white")
-  (set-mouse-color "white")		  ;; Flechita del mouse en blanco
-  (if (fboundp 'mouse-wheel-mode)
-      (mouse-wheel-mode t)
+(if (fboundp 'mouse-wheel-mode)
+    (progn
+      (setq-default mouse-wheel-scroll-amount '(1             ;; No modifier
+						((control) . 5)
+						((meta) . hscroll)
+						((shift) . text-scale)) ;; in terminal does not work
+		    mouse-wheel-tilt-scroll t          ;; horizontal scrolling with touchpad
+		    mouse-wheel-progressive-speed nil
+		    mouse-scroll-delay 0)
+      (mouse-wheel-mode 1))                    ;; Explicit call mouse-wheel-mode AFTER setting mouse-wheel-scroll-amount
 
-    ;; Else set them manually
-    (global-set-key [mouse-4] #'scroll-down-command)
-    (global-set-key [mouse-5] #'scroll-up-command)))
+  ;; Else set them manually, will be overridden latter.
+  (keymap-global-set "<mouse-4>" #'scroll-down-command)
+  (keymap-global-set "<mouse-5>" #'scroll-up-command))
 
 (global-set-key [remap scroll-up-command] #'scroll-up-line)
 (global-set-key [remap scroll-down-command] #'scroll-down-line)
