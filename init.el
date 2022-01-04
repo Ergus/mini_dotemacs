@@ -534,8 +534,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 (global-set-key [remap list-buffers] #'ibuffer)
 (setq-default ibuffer-default-sorting-mode 'alphabetic)
 
-(add-hook 'ibuffer-mode-hook (lambda nil
-			       (hl-line-mode 1)))
+(add-hook 'ibuffer-mode-hook #'hl-line-mode 1)
 
 ;;__________________________________________________________
 ;; dired
