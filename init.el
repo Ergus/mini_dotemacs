@@ -481,8 +481,8 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 (define-key ctl-x-4-map [down] #'windmove-display-down)
 
 ;;__________________________________________________________
-;; Undo
-
+;; Undo and redo
+(setq-default undo-only t)                  ;; undo does not go throw redo entries
 (global-set-key (kbd "C-M-/") #'undo-redo)  ;; for gui in tty "C-M-/" == "C-M-_"
 
 ;;__________________________________________________________
