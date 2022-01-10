@@ -84,6 +84,7 @@
 	      read-quoted-char-radix 16     ;; Read number of chars with C-q
 	      ;; kill-buffer-query-functions nil
 	      kill-do-not-save-duplicates t   ;; duplicate kill ring entries
+	      kill-ring-max (* kill-ring-max 2)   ;; increase kill ring
 
 	      eval-expression-print-length nil
 	      eval-expression-print-level nil
@@ -102,12 +103,18 @@
 	      switch-to-buffer-obey-display-actions t ;; switching the buffer respects display actions
 	      bookmark-menu-confirm-deletion t    ;; ask confirmation to delete bookmark
 	      bookmark-fontify t                  ;; Colorize bookmarked lines with bookmark-face
+	      bookmark-save-flag 1                ;; Save bookmarks immediately when added
+	      idle-update-delay 0.25              ;; idle to update screen
 
 	      translate-upper-case-key-bindings nil ;; Make keybindings case sensitive
 	      outline-minor-mode-use-buttons t      ;; Use buttons to hide/show outlines
 	      ;; hideif mode
 	      hide-ifdef-shadow t
 	      hide-ifdef-initially t
+
+	      help-window-select t                  ;; always select help windoes
+	      history-delete-duplicates t           ;; delete duplicates in commands history)      ;; don't clean recentf on startup, but when idle
+
 	      )
 
 ;; Vertical window divider
@@ -139,7 +146,9 @@
 
 (load-theme 'simple-16)
 
-(set-face-attribute 'default nil :family "Hack" :height 105)
+(if (and (display-graphic-p)
+	 (member "Hack" (font-family-list)))
+    (set-face-attribute 'default nil :family "Hack" :height 105))
 
 ;;__________________________________________________________
 ;; I don't want confirm exit, not write yes-not either
@@ -147,7 +156,7 @@
 
 (if (< emacs-major-version 28)
     (progn
-      (defalias 'yes-or-no-p 'y-or-n-p) ;; Reemplazar "yes" por "y" en el prompt
+      (defalias 'yes-or-no-p 'y-or-n-p)         ;; Reemplazar "yes" por "y" en el prompt
       (setq-default completion-auto-help 'lazy) ;; already default
       )
 
@@ -166,6 +175,12 @@
   (context-menu-mode 1)
   )
 
+(defun my/disable-icomplete ()
+  (interactive)
+  (setq-default completion-auto-select t
+		completion-wrap-movement t
+		completion-auto-help 'lazy)
+  (fido-mode -1))
 
 ;;__________________________________________________________
 ;; Show paren mode
@@ -173,8 +188,9 @@
 	      auto-revert-avoid-polling t   ;; use save signal
 	      show-paren-delay 0            ;; Highlight couple parenthesis
 	      blink-matching-paren nil
-	      recentf-auto-cleanup 10)      ;; don't clean recentf on startup, but when idle
-
+	      recentf-auto-cleanup 10
+	      ffap-machine-p-known 'reject          ;; stop ffap from pinging random hosts
+	      )
 (run-with-idle-timer 1 nil (lambda ()
 			     (global-auto-revert-mode t)
 			     (show-paren-mode t)
@@ -309,8 +325,8 @@
 ;; Ediff
 (setq-default ediff-window-setup-function #'ediff-setup-windows-plain
 	      ediff-split-window-function #'split-window-horizontally)
-(with-eval-after-load 'winner
-  (add-hook 'ediff-after-quit-hook-internal #'winner-undo))
+(eval-after-load 'winner
+  '(add-hook 'ediff-after-quit-hook-internal #'winner-undo))
 
 ;;__________________________________________________________
 ;; smerge
@@ -335,7 +351,8 @@
 
 (defun my/common-hook ()
   "Enable electric-pair-local-mode"
-  (setq-local show-trailing-whitespace t)
+  (setq-local show-trailing-whitespace t  ;; Show trailing whitespaces
+	      indicate-empty-lines t)      ;; Show empty lines at end of file)
   (electric-pair-local-mode 1))
 
 (add-hook 'prog-mode-hook #'my/common-hook)
@@ -534,6 +551,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 	      dired-auto-revert-buffer t
 	      dired-listing-switches "-alh"
 	      dired-kill-when-opening-new-dired-buffer t ;; only works for emacs > 28
+	      dired-isearch-filenames 'dwim
 	      )
 
 ;; Old alternative for dired-kill-when-opening-new-dired-buffer option.
