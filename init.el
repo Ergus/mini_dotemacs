@@ -241,7 +241,8 @@
       (goto-char isearch-other-end))
     (call-interactively #'isearch-exit))
 
-  (define-key isearch-mode-map (kbd "M-RET") #'my/isearch-exit-other-end)
+  (define-key isearch-mode-map (kbd "C-RET") #'my/isearch-exit-other-end)
+  (define-key isearch-mode-map (kbd "C-<return>") #'my/isearch-exit-other-end)
   )
 
 
