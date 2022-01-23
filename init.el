@@ -217,6 +217,7 @@
 	      ;; isearch-wrap-function #'ignore     ;; Look at the emacs-major-version check
 	      ;; isearch-wrap-pause t               ;; Disable wrapping nil.
 	      isearch-repeat-on-direction-change t ;; Don't go to the other end on direction change
+	      isearch-lax-whitespace t
 	      isearch-regexp-lax-whitespace t      ;; swiper like fuzzy search
 	      search-whitespace-regexp ".*?"
 	      ;; Emacs version > 28
@@ -560,6 +561,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
   (with-eval-after-load 'dired
     (require 'dired-x)
     (put 'dired-find-alternate-file 'disabled nil)
+    (define-key dired-mode-map [mouse-2] #'dired-mouse-find-file))
     (define-key dired-mode-map [remap dired-find-file] #'dired-find-alternate-file)  ; was dired-advertised-find-file
     (define-key dired-mode-map [remap dired-up-directory] ; was dired-up-directory
       (lambda nil
