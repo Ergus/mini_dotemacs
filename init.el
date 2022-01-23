@@ -125,6 +125,10 @@
                         'vertical-border
                         (make-glyph-code ?\u2502))
 
+;; These two must be enabled/disabled together
+(setq-default enable-recursive-minibuffers t) ;; Enable nesting in minibuffer
+(minibuffer-depth-indicate-mode 1)            ;; Mostrar nivel de nesting en minibuffer
+
 ;;__________________________________________________________
 ;; Config file not here to not track it
 (setq-default custom-file
