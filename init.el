@@ -191,6 +191,11 @@
   (fido-mode -1))
 
 ;;__________________________________________________________
+;; dabbrev
+(setq-default dabbrev-check-all-buffers nil
+	      dabbrev-ignored-buffer-regexps "^[ *]")
+
+;;__________________________________________________________
 ;; Show paren mode
 (setq-default auto-revert-verbose nil       ;; not show message when file changes
 	      auto-revert-avoid-polling t   ;; use save signal
