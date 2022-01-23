@@ -484,10 +484,10 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 (global-set-key [M-down] #'windmove-down)
 (global-set-key [M-up] #'windmove-up)
 
-(global-set-key [M-S-left] #'windmove-swap-states-left)
-(global-set-key [M-S-right] #'windmove-swap-states-right)
-(global-set-key [M-S-down] #'windmove-swap-states-down)
-(global-set-key [M-S-up] #'windmove-swap-states-up)
+(global-set-key [S-left] #'windmove-swap-states-left)
+(global-set-key [S-right] #'windmove-swap-states-right)
+(global-set-key [S-down] #'windmove-swap-states-down)
+(global-set-key [S-up] #'windmove-swap-states-up)
 
 (define-key ctl-x-4-map [left] #'windmove-display-left)
 (define-key ctl-x-4-map [right] #'windmove-display-right)
