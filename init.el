@@ -88,7 +88,7 @@
 
 	      eval-expression-print-length nil
 	      eval-expression-print-level nil
-	      enable-remote-dir-locals        ;; Open remote dir locals.
+	      enable-remote-dir-locals t      ;; Open remote dir locals.
 	      suggest-key-bindings t          ;; enable show keybindings in completions
 
 	      truncate-lines t
