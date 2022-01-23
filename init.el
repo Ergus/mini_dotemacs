@@ -175,6 +175,7 @@
 		;;bookmark-fontify t                ;; Colorize bookmarked lines with bookmark-face
 		completion-auto-help nil            ;; 'lazy completions on second tab
 		repeat-check-key nil
+		repeat-exit-key (kbd "RET")
 		)
 
   (repeat-mode 1)                      ;; Repeat mode
