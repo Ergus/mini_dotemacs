@@ -88,6 +88,7 @@
 
 	      eval-expression-print-length nil
 	      eval-expression-print-level nil
+	      enable-remote-dir-locals        ;; Open remote dir locals.
 	      suggest-key-bindings t          ;; enable show keybindings in completions
 
 	      truncate-lines t
@@ -106,7 +107,7 @@
 	      bookmark-save-flag 1                ;; Save bookmarks immediately when added
 	      idle-update-delay 0.25              ;; idle to update screen
 
-	      translate-upper-case-key-bindings nil ;; Make keybindings case sensitive
+	      ;; translate-upper-case-key-bindings nil ;; Make keybindings case sensitive
 	      outline-minor-mode-use-buttons t      ;; Use buttons to hide/show outlines
 	      ;; hideif mode
 	      hide-ifdef-shadow t
@@ -115,6 +116,8 @@
 	      help-window-select t                  ;; always select help windoes
 	      history-delete-duplicates t           ;; delete duplicates in commands history)      ;; don't clean recentf on startup, but when idle
 
+	      ;; Man
+	      Man-notify-method 'pushy              ;; Man open links in same window
 	      )
 
 ;; Vertical window divider
