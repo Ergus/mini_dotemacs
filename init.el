@@ -130,6 +130,15 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 ;;__________________________________________________________
+;; mode-line
+(setq-default mode-line-position-column-line-format '(" (%l,%C)")  ;; column number start on 1
+              ;; mode-line-compact t                                  ;; no spaces on ml
+	      mode-line-frame-identification " "                   ;; no F1 in term
+              mode-line-front-space " "                            ;; no - on the very left
+              mode-line-end-spaces " "                             ;; no ---- on the right.
+              mode-line-mule-info ""                               ;; no UUU: on the left.
+              )
+
 ;; Line numbers and fill column
 (setq-default display-line-numbers-widen t)     ;; keep line numbers inside a narrow
 (global-display-line-numbers-mode t)            ;; line numbers on the left
