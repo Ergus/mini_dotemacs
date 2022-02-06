@@ -396,34 +396,34 @@ It is intended to be called from the hook
 `c-special-indent-hook'.  It assumes that `indent-tabs-mode' is
 non-nil and probably assumes that `c-basic-offset' is the same as
 `tab-width'."
-  (save-excursion
-    (let* ((indent-pos (progn (back-to-indentation) (point)))
-	   (indent-col (current-column))
-	   (syn-elt (car c-syntactic-context))
-	   (syn-sym (c-langelem-sym syn-elt)))
-      (when (memq syn-sym '(arglist-cont-nonempty
-			    stream-op
-			    template-args-cont)) ;; <==============
-	(let* ((syn-anchor (c-langelem-pos syn-elt))
-	       (anchor-col (progn (goto-char syn-anchor)
-				  (back-to-indentation)
-				  (current-column))))
-	  ;;
-	  (goto-char indent-pos)
-	  (delete-horizontal-space)
-	  (insert-char ?\t (/ anchor-col tab-width))
-	  (insert-char ?\  (- indent-col (current-column)))))))
-  (when (= (current-column) 0)
-    (back-to-indentation)))
+  (when (and indent-tabs-mode
+	     (= c-basic-offset tab-width))
+    (save-excursion
+      (let* ((indent-pos (progn (back-to-indentation) (point)))
+	     (indent-col (current-column))
+	     (syn-elt (car c-syntactic-context))
+	     (syn-sym (c-langelem-sym syn-elt)))
+	(when (memq syn-sym '(arglist-cont-nonempty
+			      stream-op
+			      template-args-cont)) ;; <==============
+	  (let* ((syn-anchor (c-langelem-pos syn-elt))
+		 (anchor-col (progn (goto-char syn-anchor)
+				    (back-to-indentation)
+				    (current-column))))
+	    ;;
+	    (goto-char indent-pos)
+	    (delete-horizontal-space)
+	    (insert-char ?\t (/ anchor-col tab-width))
+	    (insert-char ?\  (- indent-col (current-column)))))))
+    (when (= (current-column) 0)
+      (back-to-indentation))))
 
 (define-minor-mode c-ms-space-for-alignment-mode
   "Enable indent with tabs align with spaces."
   :global nil
   :init-value nil
   (if c-ms-space-for-alignment-mode
-      (when (and indent-tabs-mode
-		 (= c-basic-offset tab-width))
-	(add-hook 'c-special-indent-hook #'ms-space-for-alignment-hook nil t))
+      (add-hook 'c-special-indent-hook #'ms-space-for-alignment-hook nil t)
     (remove-hook 'c-special-indent-hook #'ms-space-for-alignment-hook t)))
 
 ;;====================
