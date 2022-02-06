@@ -9,38 +9,10 @@
 ;;; Commentary:
 ;;; Code:
 
-(setq-default package-quickstart t)
-
-(setq-default mode-line-position-column-line-format '(" (%l,%C)")  ;; column number start on 1
-	      mode-line-compact t                                  ;; no spaces on ml
-	      mode-line-front-space " "                            ;; no - on the very left
-	      mode-line-end-spaces " "                             ;; no ---- on the right.
-	      mode-line-mule-info ""                               ;; no UUU: on the left.
-	      ;; display-line-numbers-width 4   ;; width reserved (default nil: compute dynamically)
-	      )
-
-(column-number-mode t)			;; Numero de la columna
-(size-indication-mode t)                ;; Muestra el tamanno en modeline
-(line-number-mode t)			;; Numero de linea modeline
-
-(setq-default display-line-numbers-widen t) ;; keep line numbers inside a narrow
-(global-display-line-numbers-mode t)	;; line numbers on the left
-(global-display-fill-column-indicator-mode t)
-
-(savehist-mode t)			;; Historial
-(auto-compression-mode t)		;; Uncompress on the fly
-
-(delete-selection-mode t)		;; Sobreescribe seleccion al pegar
-
 (prefer-coding-system 'utf-8)	        ;; Encoding
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
-
-(save-place-mode 1)                           ;; Remember point in files
-(setq-default save-place-ignore-files-regexp  ;; Modified to add /tmp/* files
-	      (replace-regexp-in-string "\\\\)\\$" "\\|^/tmp/.+\\)$"
-					save-place-ignore-files-regexp t t))
 
 (setq-default vc-follow-symlinks t	    ;; Open links not open
 	      ;;tab-always-indent complete  ;; make tab key do indent only
@@ -156,6 +128,25 @@
   (message "Creating %s" mylisp-dir))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+
+;;__________________________________________________________
+;; Line numbers and fill column
+(setq-default display-line-numbers-widen t)     ;; keep line numbers inside a narrow
+(global-display-line-numbers-mode t)            ;; line numbers on the left
+(global-display-fill-column-indicator-mode t)
+
+;; Save history
+(savehist-mode t)
+
+;; Compress and delete selection
+(auto-compression-mode t)               ;; Uncompress on the fly
+(delete-selection-mode t)               ;; Override selection
+
+
+(setq-default save-place-ignore-files-regexp  ;; Modified to add /tmp/* files
+	      (replace-regexp-in-string "\\\\)\\$" "\\|^/tmp/.+\\)$"
+					save-place-ignore-files-regexp t t))
+(save-place-mode 1)                           ;; Remember point in files
 
 ;;__________________________________________________________
 ;; The Colors (I want to change this for a real theme, there are maaaaany)
