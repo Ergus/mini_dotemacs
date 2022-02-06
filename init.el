@@ -11,6 +11,18 @@
 
 (setq-default package-quickstart t)
 
+(setq-default mode-line-position-column-line-format '(" (%l,%C)")  ;; column number start on 1
+	      mode-line-compact t                                  ;; no spaces on ml
+	      mode-line-front-space " "                            ;; no - on the very left
+	      mode-line-end-spaces " "                             ;; no ---- on the right.
+	      mode-line-mule-info ""                               ;; no UUU: on the left.
+	      ;; display-line-numbers-width 4   ;; width reserved (default nil: compute dynamically)
+	      )
+
+(column-number-mode t)			;; Numero de la columna
+(size-indication-mode t)                ;; Muestra el tamanno en modeline
+(line-number-mode t)			;; Numero de linea modeline
+
 (setq-default display-line-numbers-widen t) ;; keep line numbers inside a narrow
 (global-display-line-numbers-mode t)	;; line numbers on the left
 (global-display-fill-column-indicator-mode t)
@@ -18,16 +30,12 @@
 (savehist-mode t)			;; Historial
 (auto-compression-mode t)		;; Uncompress on the fly
 
-(size-indication-mode t)		;; Muestra el el tamanno en modeline
 (delete-selection-mode t)		;; Sobreescribe seleccion al pegar
 
 (prefer-coding-system 'utf-8)	        ;; Encoding
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
-
-(column-number-mode t)			;; Numero de la columna
-(line-number-mode t)			;; Numero de linea modeline
 
 (save-place-mode 1)                           ;; Remember point in files
 (setq-default save-place-ignore-files-regexp  ;; Modified to add /tmp/* files
