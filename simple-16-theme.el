@@ -69,9 +69,13 @@
 	       :foreground nil
 	       :weight ultrabold)))
 
- `(lazy-highlight ((t :background ,(simple-16-theme-color brightblue))))
+ `(lazy-highlight ((default :background ,(simple-16-theme-color cyan))
+		   (((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblack))))
 
  `(region ((t :background ,(simple-16-theme-color brightblue))))
+
+ `(trailing-whitespace ((default :background ,(simple-16-theme-color cyan))
+			(((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblack))))
 
  ;; Modeline
  `(mode-line ((t :background ,(simple-16-theme-color blue)
@@ -91,20 +95,19 @@
  `(fill-column-indicator ((default :foreground ,(simple-16-theme-color white))
 			  (((class color) (min-colors 16)) :foreground ,(simple-16-theme-color brightblack))))
 
- `(show-paren-match ((t :background ,(simple-16-theme-color brightblue) :inherit nil)))
+ `(show-paren-match ((default :background ,(simple-16-theme-color blue))
+		     (((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblack))))
 
  ;; tab-bar
- `(tab-bar ((t :background ,(simple-16-theme-color black)
-               :foreground ,(simple-16-theme-color white)
-               :inverse-video nil)))
+ `(tab-bar ((t :inherit default :weight light)))
+ `(tab-bar-tab ((t :inherit tab-bar :background ,(simple-16-theme-color blue) :weight ultra-bold)))
+ `(tab-bar-tab-inactive ((t :inherit tab-bar :foreground ,(simple-16-theme-color white))))
 
- `(tab-bar-tab ((t :inherit tab-bar :weight ultra-bold)))
-
- `(tab-bar-tab-inactive ((default :background ,(simple-16-theme-color black)
-				  :foreground ,(simple-16-theme-color white)
-				  :weight normal
-				  :underline nil)
-			 (((class color) (min-colors 16)) :foreground ,(simple-16-theme-color brightblack))))
+ ;; tab-line
+ `(tab-line ((t :inherit default :weight light)))
+ `(tab-line-tab ((t :inherit tab-line)))
+ `(tab-line-tab-current ((t :inherit tab-line :background ,(simple-16-theme-color blue) :weight ultra-bold)))
+ `(tab-line-tab-inactive ((t :inherit tab-line :foreground ,(simple-16-theme-color white))))
 
  ;; Some others
  `(Man-overstrike ((t :inherit font-lock-type-face :bold t)))
@@ -124,10 +127,10 @@
                               :foreground ,(simple-16-theme-color green))))
  `(company-tooltip-selection ((t :background ,(simple-16-theme-color blue)
                                  :weight ultra-bold)))
- `(company-scrollbar-bg ((default :background ,(simple-16-theme-color blue))
-			 (((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblack))))
+ `(company-tooltip-scrollbar-track ((default :background ,(simple-16-theme-color blue))
+				    (((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblack))))
 
- `(company-scrollbar-fg ((t :background ,(simple-16-theme-color blue))))
+ `(company-tooltip-scrollbar-thumb ((t :background ,(simple-16-theme-color blue))))
 
  ;; Ivy
  `(ivy-current-match ((t :inherit nil
