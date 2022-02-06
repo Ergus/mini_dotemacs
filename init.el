@@ -151,11 +151,11 @@
 (auto-compression-mode t)               ;; Uncompress on the fly
 (delete-selection-mode t)               ;; Override selection
 
-
-(setq-default save-place-ignore-files-regexp  ;; Modified to add /tmp/* files
-	      (replace-regexp-in-string "\\\\)\\$" "\\|^/tmp/.+\\)$"
-					save-place-ignore-files-regexp t t))
+;; saveplace
 (save-place-mode 1)                           ;; Remember point in files
+(setq save-place-ignore-files-regexp  ;; Modified to add /tmp/* files
+      (replace-regexp-in-string "\\\\)\\$" "\\|^/tmp/.+\\)$"
+				save-place-ignore-files-regexp t t))
 
 ;;__________________________________________________________
 ;; The Colors (I want to change this for a real theme, there are maaaaany)
