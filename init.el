@@ -122,8 +122,9 @@
 	      hide-ifdef-initially t
 
 	      help-window-select t                  ;; always select help windoes
-	      history-delete-duplicates t           ;; delete duplicates in commands history)      ;; don't clean recentf on startup, but when idle
+	      history-delete-duplicates t           ;; delete duplicates in commands history)
 
+	      find-library-include-other-files nil  ;; find-library only shows libraries, not random files.
 	      ;; Man
 	      Man-notify-method 'pushy              ;; Man open links in same window
 	      )
@@ -329,8 +330,8 @@
 
 (if (fboundp 'mouse-wheel-mode)
     (progn
-      (setq-default mouse-wheel-scroll-amount '(1             ;; No modifier
-						((control) . 5)
+      (setq-default mouse-wheel-scroll-amount '(3             ;; No modifier
+						((control) . 6)
 						((meta) . hscroll)
 						((shift) . text-scale)) ;; in terminal does not work
 		    mouse-wheel-tilt-scroll t          ;; horizontal scrolling with touchpad
