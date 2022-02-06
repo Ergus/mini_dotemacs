@@ -206,12 +206,13 @@
 
 ;;__________________________________________________________
 ;; Show paren mode
-(setq-default auto-revert-verbose nil       ;; not show message when file changes
-	      auto-revert-avoid-polling t   ;; use save signal
-	      show-paren-delay 0            ;; Highlight couple parenthesis
+(setq-default auto-revert-verbose nil             ;; not show message when file changes
+	      auto-revert-avoid-polling t         ;; use save signal
+	      show-paren-delay 0                  ;; Highlight couple parenthesis
+	      show-paren-context-when-offscreen t ;; show context in the echo area
 	      blink-matching-paren nil
 	      recentf-auto-cleanup 10
-	      ffap-machine-p-known 'reject          ;; stop ffap from pinging random hosts
+	      ffap-machine-p-known 'reject        ;; stop ffap from pinging random hosts
 	      )
 (run-with-idle-timer 1 nil (lambda ()
 			     (global-auto-revert-mode t)
