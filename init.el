@@ -588,7 +588,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
     (define-key dired-mode-map [remap dired-up-directory] ; was dired-up-directory
       (lambda nil
 	(interactive)
-	(find-alternate-file "..")))))
+	(find-alternate-file ".."))))
 
 (provide 'init)
 ;;; init.el ends here
