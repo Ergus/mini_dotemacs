@@ -285,7 +285,8 @@
   (define-key isearch-mode-map [remap isearch-delete-char] #'isearch-del-char)
   )
 
-
+;;__________________________________________________________
+;; Occur
 (with-eval-after-load 'replace  ;; is where occur resides
   (keymap-set occur-mode-map "SPC" #'occur-mode-display-occurrence)
 
@@ -300,6 +301,17 @@
 			   (eq this-command #'occur-mode-goto-occurrence))
 		  (quit-restore-window win)
 		  (isearch-done))))))
+
+(defun my/occur ()
+  "Occur with thing at point REGEXP default to thing at point."
+  (interactive)
+  (let* ((bounds (find-tag-default-bounds))
+	 (regexp (or (and bounds
+			  (buffer-substring-no-properties (car bounds) (cdr bounds)))
+		     (occur-read-primary-args))))
+    (funcall-interactively #'occur regexp)))
+
+(keymap-global-set "<remap> <occur>" #'my/occur)
 
 ;;__________________________________________________________
 ;; imenu
