@@ -237,6 +237,8 @@
 
 ;; Use cycle-spacing instead of just-one-space on M-SPC
 (global-set-key [remap just-one-space] #'cycle-spacing)
+(global-set-key [remap delete-char] #'delete-forward-char)
+(global-set-key [remap count-words-region] #'count-words)  ;; count on whole file or region if active
 
 ;; profiler
 (add-hook 'profiler-report-mode-hook #'hl-line-mode)
