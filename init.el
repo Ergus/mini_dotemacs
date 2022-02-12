@@ -35,7 +35,7 @@
 	      ;; line-move-visual nil
 	      backward-delete-char-untabify-method nil ;; Don't untabify on backward delete
 
-	      ;; split-width-threshold 160    ;; Limite para split vertical
+	      split-width-threshold 140     ;; Limit for vertical split (default 160)
 	      ;; kill-whole-line t
 	      load-prefer-newer t
 	      ;; mark-even-if-inactive nil    ;; no mark no region
@@ -99,6 +99,11 @@
 	      find-library-include-other-files nil  ;; find-library only shows libraries, not random files.
 	      ;; Man
 	      Man-notify-method 'pushy              ;; Man open links in same window
+
+	      view-read-only t                      ;; buffers visiting files read-only do so in view mode
+	      kill-read-only-ok t                   ;; don’t signal an error for killing read-only text.
+	      debugger-stack-frame-as-list t        ;; display call stack frames as lists.
+	      async-shell-command-display-buffer nil ;;command buffer wait until there is output
 	      )
 
 ;; Vertical window divider
