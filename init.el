@@ -267,9 +267,6 @@
 	      )
 
 (with-eval-after-load 'isearch
-  (define-key isearch-mode-map
-    [remap isearch-delete-char] #'isearch-del-char)
-
   (when (< emacs-major-version 28)
     ;; On emacs >= 28 isearch-allow-motion does this, so it is not needed.
     (define-key isearch-mode-map (kbd "M-<") #'isearch-beginning-of-buffer)
@@ -284,15 +281,15 @@
 
   (define-key isearch-mode-map (kbd "C-RET") #'my/isearch-exit-other-end)
   (define-key isearch-mode-map (kbd "C-<return>") #'my/isearch-exit-other-end)
+  (define-key isearch-mode-map [remap isearch-abort] #'isearch-cancel)
+  (define-key isearch-mode-map [remap isearch-delete-char] #'isearch-del-char)
   )
-
 
 ;;__________________________________________________________
 ;; imenu
 (setq-default imenu-use-markers nil
 	      imenu-auto-rescan t
 	      imenu-max-item-length 256)
-
 ;;__________________________________________________________
 ;; ssh
 (setq-default compilation-scroll-output 'first-error
