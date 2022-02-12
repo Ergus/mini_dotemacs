@@ -285,6 +285,22 @@
   (define-key isearch-mode-map [remap isearch-delete-char] #'isearch-del-char)
   )
 
+
+(with-eval-after-load 'replace  ;; is where occur resides
+  (keymap-set occur-mode-map "SPC" #'occur-mode-display-occurrence)
+
+  (add-hook 'occur-mode-hook (lambda nil
+			       (display-line-numbers-mode -1)
+			       (switch-to-buffer-other-window "*Occur*")))
+
+  (add-hook 'occur-mode-find-occurrence-hook
+	    (lambda nil
+	      (let ((win (get-buffer-window "*Occur*")))
+		(when (and win
+			   (eq this-command #'occur-mode-goto-occurrence))
+		  (quit-restore-window win)
+		  (isearch-done))))))
+
 ;;__________________________________________________________
 ;; imenu
 (setq-default imenu-use-markers nil
