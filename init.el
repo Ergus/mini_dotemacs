@@ -111,9 +111,19 @@
                         'vertical-border
                         (make-glyph-code ?\u2502))
 
+;;__________________________________________________________
+;; minibuffers
+
 ;; These two must be enabled/disabled together
-(setq-default enable-recursive-minibuffers t) ;; Enable nesting in minibuffer
+(setq-default enable-recursive-minibuffers t ;; Enable nesting in minibuffer
+	      read-file-name-completion-ignore-case t
+	      read-buffer-completion-ignore-case t
+	      completion-ignore-case t)
 (minibuffer-depth-indicate-mode 1)            ;; Mostrar nivel de nesting en minibuffer
+
+;; (setq minibuffer-eldef-shorten-default t)
+(add-hook 'minibuffer-setup-hook #'my/unset-gc)
+(add-hook 'minibuffer-exit-hook #'my/restore-gc)
 
 ;;__________________________________________________________
 ;; Config file not here to not track it
@@ -310,13 +320,6 @@
 (setq-default tab-bar-tab-hints t  ;; show tab numbers
 	      tab-bar-close-last-tab-choice 'tab-bar-mode-disable
 	      tab-bar-show 1)
-;;__________________________________________________________
-;; minibuffers
-
-;; (setq minibuffer-eldef-shorten-default t)
-(add-hook 'minibuffer-setup-hook #'my/unset-gc)
-
-(add-hook 'minibuffer-exit-hook #'my/restore-gc)
 
 ;;__________________________________________________________
 ;; gdb rectangles
