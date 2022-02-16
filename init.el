@@ -320,17 +320,28 @@
 	      imenu-max-item-length 256)
 ;;__________________________________________________________
 ;; ssh
+
 (setq-default compilation-scroll-output 'first-error
-	      compilation-always-kill t
-	      tramp-auto-save-directory "~/.emacs.d/tramp-autosave-dir"
-	      tramp-default-method "rsync"
-	      ;;tramp-default-method "ssh"
-	      ;;tramp-change-syntax 'simplified
+	      compilation-always-kill t)
+
+
+(setq-default tramp-auto-save-directory
+	      (expand-file-name "tramp-autosave-dir" user-emacs-directory)
+	      ;; tramp-default-method "ssh"       ;; default scp
+	      ;; tramp-change-syntax 'simplified
+	      remote-file-name-inhibit-cache 60              ;; default 10
+	      tramp-completion-reread-directory-timeout 120  ;; default 10
+	      password-cache-expiry 3600                     ;; cache passwords for 1 hour
+	      tramp-use-scp-direct-remote-copying t          ;; copy directly between remote hosts
+	      tramp-verbose (if init-file-debug 10 0)        ;; Default 3 always
+	      ;; tramp-persistency-file-name "~/.emacs.d/tramp" ;; already default
 	      tramp-use-ssh-controlmaster-options nil
-	      remote-file-name-inhibit-cache 120
-	      tramp-completion-reread-directory-timeout t
-	      tramp-persistency-file-name "~/.emacs.d/tramp")
-;;(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+	      )
+
+(with-eval-after-load 'tramp
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+  (add-to-list 'tramp-remote-process-environment
+               (format "DISPLAY=%s" (getenv "DISPLAY"))))
 
 (with-eval-after-load 'term
   (defun my/term-mode-hook ()
