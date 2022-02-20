@@ -75,9 +75,6 @@
 	      save-interprogram-paste-before-kill t ;; Save clipboard before replace
 	      minibuffer-eldef-shorten-default t
 
-	      ;; M-x show context-local commands
-	      read-extended-command-predicate #'command-completion-default-include-p
-	      completions-detailed t              ;; show more detailed completions
 	      goto-line-history-local t         ;; Buffer local goto-line history
 
 	      uniquify-buffer-name-style 'post-forward
@@ -115,7 +112,13 @@
 ;; minibuffers
 
 ;; These two must be enabled/disabled together
-(setq-default enable-recursive-minibuffers t ;; Enable nesting in minibuffer
+(setq-default enable-recursive-minibuffers t     ;; Enable nesting in minibuffer
+	      completion-auto-help 'lazy
+	      completion-auto-select t
+	      completion-wrap-movement t
+	      completions-detailed t             ;; show more detailed completions
+	      ;; M-x show context-local commands
+	      read-extended-command-predicate #'command-completion-default-include-p
 	      read-file-name-completion-ignore-case t
 	      read-buffer-completion-ignore-case t
 	      completion-ignore-case t)
@@ -185,34 +188,21 @@
 ;; I don't want confirm exit, not write yes-not either
 (setq-default read-file-name-completion-ignore-case t) ;; Ignore case in filename read
 
-(if (< emacs-major-version 28)
-    (progn
-      (defalias 'yes-or-no-p 'y-or-n-p)         ;; Reemplazar "yes" por "y" en el prompt
-      (setq-default completion-auto-help 'lazy) ;; already default
-      )
+(setq-default native-comp-async-report-warnings-errors 'silent
+	      bookmark-menu-confirm-deletion t    ;; ask confirmation to delete bookmark
+	      )
 
-  ;; Functionalities for emacs >= 28
-  (setq-default use-short-answers t    ;; use y-or-n
-		;; native comp error not in minibuffer
-		native-comp-async-report-warnings-errors 'silent
-		bookmark-menu-confirm-deletion t    ;; ask confirmation to delete bookmark
-		;;bookmark-fontify t                ;; Colorize bookmarked lines with bookmark-face
-		completion-auto-help nil            ;; 'lazy completions on second tab
-		repeat-check-key nil
-		repeat-exit-key (kbd "RET")
-		)
+(when (fboundp 'repeat-mode)
+  (setq-default repeat-check-key nil
+		repeat-exit-key (kbd "RET"))
+  (repeat-mode 1))
 
-  (repeat-mode 1)                      ;; Repeat mode
-  (fido-vertical-mode 1)
-  (context-menu-mode 1)
-  )
+(when (fboundp 'context-menu-mode)
+  (context-menu-mode 1))
 
-(defun my/disable-icomplete ()
-  (interactive)
-  (setq-default completion-auto-select t
-		completion-wrap-movement t
-		completion-auto-help 'lazy)
-  (fido-mode -1))
+(if (boundp 'use-short-answers)
+    (setq use-short-answers t)
+  (defalias 'yes-or-no-p 'y-or-n-p))
 
 ;;__________________________________________________________
 ;; dabbrev
