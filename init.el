@@ -615,17 +615,16 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 	      dired-isearch-filenames 'dwim
 	      )
 
-;; Old alternative for dired-kill-when-opening-new-dired-buffer option.
-(when (< emacs-major-version 28)
-  (with-eval-after-load 'dired
-    (require 'dired-x)
+(with-eval-after-load 'dired
+  (define-key dired-mode-map [mouse-2] #'dired-mouse-find-file)
+  (require 'dired-x)
+  (when (< emacs-major-version 28)
     (put 'dired-find-alternate-file 'disabled nil)
-    (define-key dired-mode-map [mouse-2] #'dired-mouse-find-file))
     (define-key dired-mode-map [remap dired-find-file] #'dired-find-alternate-file)  ; was dired-advertised-find-file
     (define-key dired-mode-map [remap dired-up-directory] ; was dired-up-directory
-      (lambda nil
-	(interactive)
-	(find-alternate-file ".."))))
+		(lambda nil
+		  (interactive)
+		  (find-alternate-file "..")))))
 
 (provide 'init)
 ;;; init.el ends here
