@@ -72,20 +72,24 @@
  `(lazy-highlight ((default :background ,(simple-16-theme-color cyan))
 		   (((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblack))))
 
- `(region ((t :background ,(simple-16-theme-color brightblue))))
+ `(region ((default :background ,(simple-16-theme-color blue)
+		    :foreground ,(simple-16-theme-color white))
+	   (((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblue) :foreground nil)))
 
  `(trailing-whitespace ((default :background ,(simple-16-theme-color cyan))
 			(((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblack))))
 
  ;; Modeline
  `(mode-line ((t :background ,(simple-16-theme-color blue)
-		 :foreground ,(simple-16-theme-color brightwhite)
-		 :weight light)))
+		 :foreground ,(simple-16-theme-color white)
+		 :weight bold)))
 
  `(mode-line-inactive ((default :background ,(simple-16-theme-color black)
 				:foreground ,(simple-16-theme-color white)
-				:weight ultrabold)
-		       (((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblack))))
+				:weight normal)
+		       (((class color) (min-colors 16))
+			:background ,(simple-16-theme-color brightblack)
+			:foreground ,(simple-16-theme-color brightwhite))))
 
  ;; line numbers
  `(line-number ((default :foreground ,(simple-16-theme-color white))
