@@ -1,5 +1,6 @@
-;;; init.el --- Emacs Initialization and Configuration
-;; Copyright (C) 2018-2020 Jimmy Aguilar Mena
+;;; init.el --- Emacs Initialization and Configuration -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2018-2022 Jimmy Aguilar Mena
 
 ;; Author: Jimmy Aguilar Mena
 ;; Version: 0.1
