@@ -101,6 +101,8 @@
 	      kill-read-only-ok t                   ;; don’t signal an error for killing read-only text.
 	      debugger-stack-frame-as-list t        ;; display call stack frames as lists.
 	      async-shell-command-display-buffer nil ;;command buffer wait until there is output
+
+	      register-preview-delay 0.0            ;; for register view remvoe delay.
 	      )
 
 ;; Vertical window divider
