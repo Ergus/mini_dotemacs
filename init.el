@@ -219,14 +219,16 @@
 	      show-paren-delay 0                  ;; Highlight couple parenthesis
 	      show-paren-context-when-offscreen t ;; show context in the echo area
 	      blink-matching-paren nil
-	      recentf-auto-cleanup 10
+	      recentf-max-saved-items 48     ;; Max items saved
+	      recentf-auto-cleanup nil
 	      ffap-machine-p-known 'reject        ;; stop ffap from pinging random hosts
 	      )
 (run-with-idle-timer 1 nil (lambda ()
 			     (global-auto-revert-mode t)
 			     (show-paren-mode t)
 			     (ffap-bindings)
-			     (recentf-mode 1)))
+			     (recentf-mode 1)
+			     (recentf-cleanup)))
 
 ;; Use cycle-spacing instead of just-one-space on M-SPC
 (global-set-key [remap just-one-space] #'cycle-spacing)
