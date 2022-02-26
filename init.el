@@ -616,8 +616,9 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 	      )
 
 (with-eval-after-load 'dired
-  (define-key dired-mode-map [mouse-2] #'dired-mouse-find-file)
   (require 'dired-x)
+  (define-key dired-mode-map [mouse-2] #'dired-mouse-find-file)
+  (add-hook 'dired-mode-hook #'hl-line-mode)
   (when (< emacs-major-version 28)
     (put 'dired-find-alternate-file 'disabled nil)
     (define-key dired-mode-map [remap dired-find-file] #'dired-find-alternate-file)  ; was dired-advertised-find-file
