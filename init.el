@@ -279,12 +279,21 @@
 
 ;;__________________________________________________________
 ;; Occur
+(setq-default list-matching-lines-jump-to-current-line t)
+
 (with-eval-after-load 'replace  ;; is where occur resides
+  ;; With error follow this is pointless.
   (keymap-set occur-mode-map "SPC" #'occur-mode-display-occurrence)
+  (add-hook 'occur-hook (lambda ()
+			  (beginning-of-line)
+			  (recenter nil t)))
 
   (add-hook 'occur-mode-hook (lambda nil
+			       (hl-line-mode 1)
 			       (display-line-numbers-mode -1)
-			       (switch-to-buffer-other-window "*Occur*")))
+			       (switch-to-buffer-other-window "*Occur*")
+			       ;; (next-error-follow-minor-mode 1)
+			       ))
 
   (add-hook 'occur-mode-find-occurrence-hook
 	    (lambda nil
@@ -293,17 +302,6 @@
 			   (eq this-command #'occur-mode-goto-occurrence))
 		  (quit-restore-window win)
 		  (isearch-done))))))
-
-(defun my/occur ()
-  "Occur with thing at point REGEXP default to thing at point."
-  (interactive)
-  (let* ((bounds (find-tag-default-bounds))
-	 (regexp (or (and bounds
-			  (buffer-substring-no-properties (car bounds) (cdr bounds)))
-		     (occur-read-primary-args))))
-    (funcall-interactively #'occur regexp)))
-
-(keymap-global-set "<remap> <occur>" #'my/occur)
 
 ;;__________________________________________________________
 ;; imenu
