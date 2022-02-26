@@ -317,7 +317,7 @@
 
 (setq-default tramp-auto-save-directory
 	      (expand-file-name "tramp-autosave-dir" user-emacs-directory)
-	      ;; tramp-default-method "ssh"       ;; default scp
+	      tramp-default-method "scp"                     ;; default scp
 	      ;; tramp-change-syntax 'simplified
 	      remote-file-name-inhibit-cache 60              ;; default 10
 	      tramp-completion-reread-directory-timeout 120  ;; default 10
@@ -326,6 +326,7 @@
 	      tramp-verbose (if init-file-debug 10 0)        ;; Default 3 always
 	      ;; tramp-persistency-file-name "~/.emacs.d/tramp" ;; already default
 	      tramp-use-ssh-controlmaster-options nil
+	      tramp-completion-use-auth-sources nil          ;; no use auth
 	      )
 
 (with-eval-after-load 'tramp
