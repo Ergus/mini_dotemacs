@@ -221,7 +221,7 @@
 	      blink-matching-paren nil
 	      recentf-max-saved-items 48     ;; Max items saved
 	      recentf-auto-cleanup nil
-	      ffap-machine-p-known 'reject        ;; stop ffap from pinging random hosts
+	      ffap-machine-p-known 'accept        ;; stop ffap from pinging random hosts
 	      )
 (run-with-idle-timer 1 nil (lambda ()
 			     (global-auto-revert-mode t)
