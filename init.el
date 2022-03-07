@@ -87,7 +87,7 @@
 
 	      ;; translate-upper-case-key-bindings nil ;; Make keybindings case sensitive
 	      outline-minor-mode-use-buttons t      ;; Use buttons to hide/show outlines
-	      ;; hideif mode
+	      ;; For when hide-if mode is enabled.
 	      hide-ifdef-shadow t
 	      hide-ifdef-initially t
 
@@ -518,7 +518,7 @@ non-nil and probably assumes that `c-basic-offset' is the same as
     (c-toggle-auto-newline 1)
     (c-toggle-cpp-indent-to-body 1)
     (c-ms-space-for-alignment-mode 1)
-    (hide-ifdef-mode 1)
+    ;; (hide-ifdef-mode 1)
     (subword-mode 1))
 
   (add-hook 'c-mode-common-hook #'my/c-mode-common-hook))
@@ -610,6 +610,8 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; dired
+
+;; Old alternative for dired-kill-when-opening-new-dired-buffer option.
 (setq-default dired-recursive-copies 'top   ;; Always ask recursive copy
 	      dired-recursive-deletes 'top  ;; Always ask recursive delete
 	      dired-dwim-target t	    ;; Copy in split mode with p
