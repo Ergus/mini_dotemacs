@@ -139,7 +139,7 @@
 	       (display-buffer-at-bottom (window-height . 10))))
 
 (add-hook 'completion-setup-hook (lambda ()
-				   (setq-local mode-line-format nil)) t)
+				   (setq-local mode-line-format nil)))
 
 ;;__________________________________________________________
 ;; Config file not here to not track it
