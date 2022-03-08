@@ -116,10 +116,12 @@
 
 ;; These two must be enabled/disabled together
 (setq-default enable-recursive-minibuffers t     ;; Enable nesting in minibuffer
+	      completion-show-help nil           ;; Don't show help in completion buffer
 	      completion-auto-help 'lazy
 	      completion-auto-select t
 	      completion-wrap-movement t
 	      completions-detailed t             ;; show more detailed completions
+	      completions-format 'one-column     ;; Vertical completion list
 	      ;; M-x show context-local commands
 	      read-extended-command-predicate #'command-completion-default-include-p
 	      read-file-name-completion-ignore-case t
@@ -130,6 +132,13 @@
 ;; (setq minibuffer-eldef-shorten-default t)
 (add-hook 'minibuffer-setup-hook #'my/unset-gc)
 (add-hook 'minibuffer-exit-hook #'my/restore-gc)
+
+(add-to-list 'display-buffer-alist
+	     '("^\\*Completions\\*$" .
+	       (display-buffer-at-bottom (window-height . 10))))
+
+(add-hook 'completion-setup-hook (lambda ()
+				   (setq-local mode-line-format nil)) t)
 
 ;;__________________________________________________________
 ;; Config file not here to not track it
