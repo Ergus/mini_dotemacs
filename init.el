@@ -205,10 +205,31 @@
 	      bookmark-menu-confirm-deletion t    ;; ask confirmation to delete bookmark
 	      )
 
+;; Repeat mode
+(setq-default repeat-check-key nil
+	      repeat-exit-key (kbd "RET"))
+
+(defmacro my/repeat-keymap (keymap-name keymap &rest defs)
+  "Generate a keymap as repeat-map and then add it to a another keymap."
+  (declare (indent 2))
+  `(with-eval-after-load 'repeat
+     (defvar ,keymap-name (make-sparse-keymap)
+       "Keymap to repeat winner commands.")
+     ,@(let ((sets1) (sets2) (puts) (key) (val))
+	 (while defs
+	   (setq key (pop defs)
+		 val (pop defs))
+	   (push `(define-key ,keymap ,(kbd key) ,val) sets1)
+	   (push `(define-key ,keymap-name ,(kbd key) ,val) sets2)
+	   (push `(put ,val 'repeat-map ',keymap-name) puts))
+	 (append sets1 sets2 puts))))
+
 (when (fboundp 'repeat-mode)
-  (setq-default repeat-check-key nil
-		repeat-exit-key (kbd "RET"))
   (repeat-mode 1))
+
+(my/repeat-keymap my/next-prev-repeat-map ctl-x-map
+  "C-<left>" #'previous-buffer
+  "C-<right>" #'next-buffer)
 
 (when (fboundp 'context-menu-mode)
   (context-menu-mode 1))
@@ -576,21 +597,12 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 ;;__________________________________________________________
 ;; Winner mode
-;; winner
 (setq-default winner-dont-bind-my-keys t)
 (winner-mode t)
-(define-key ctl-x-4-map "u"  #'winner-undo)
-(define-key ctl-x-4-map "r"  #'winner-redo)
 
-(with-eval-after-load 'repeat
-  (defvar winner-repeat-map
-    (let ((map (make-sparse-keymap)))
-      (define-key map "u" #'winner-undo)
-      (define-key map "r" #'winner-redo)
-      map)
-    "Keymap to repeat winner commands.")
-  (put #'winner-undo 'repeat-map 'winner-repeat-map)
-  (put #'winner-redo 'repeat-map 'winner-repeat-map))
+(my/repeat-keymap winner-repeat-map ctl-x-4-map
+  "u"  #'winner-undo
+  "r"  #'winner-redo)
 
 ;;__________________________________________________________
 ;; Eldoc
@@ -600,11 +612,22 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 	      eldoc-echo-area-display-truncation-message nil) ;; Not verbose when truncated
 
 ;;__________________________________________________________
-;; Transpose
-(define-key ctl-x-map [C-M-left] (lambda (arg) (interactive "*p") (transpose-words (- arg))))
-(define-key ctl-x-map [C-M-right] #'transpose-words)
-(define-key ctl-x-map [M-left] (lambda (arg) (interactive "*p") (transpose-chars (- arg))))
-(define-key ctl-x-map [M-right] #'transpose-chars)
+;; Transpose (REINSERT)
+
+(when (boundp 'ctl-x-map)
+  (defun my/untranspose-words (arg)
+    (interactive "*p")
+    (transpose-words (- arg)))
+
+  (defun my/untranspose-chars (arg)
+    (interactive "*p")
+    (transpose-chars (- arg)))
+
+  (my/repeat-keymap transpose-repeat-map ctl-x-map
+    "C-M-<left>" #'my/untranspose-words
+    "C-M-<right>" #'transpose-words
+    "M-<left>" #'my/untranspose-chars
+    "M-<right>" #'transpose-chars))
 
 ;;__________________________________________________________
 ;; Abbrev mode
