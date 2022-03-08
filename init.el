@@ -158,7 +158,7 @@
   (make-directory mylisp-dir)
   (message "Creating %s" mylisp-dir))
 
-(add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path mylisp-dir)
 
 ;;__________________________________________________________
 ;; mode-line
