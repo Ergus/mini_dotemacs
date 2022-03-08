@@ -552,12 +552,12 @@ non-nil and probably assumes that `c-basic-offset' is the same as
     ([down] . windmove-delete-down))
   "The base keymap for `highlight changes'.")
 
-(define-key ctl-x-map "0" ctl-x-0-map)
+(global-set-key (kbd "C-x 0") ctl-x-0-map)
 
-(global-set-key [M-left] #'windmove-left)
-(global-set-key [M-right] #'windmove-right)
-(global-set-key [M-down] #'windmove-down)
-(global-set-key [M-up] #'windmove-up)
+(global-set-key (kbd "C-x <left>") #'windmove-left)
+(global-set-key (kbd "C-x <right>") #'windmove-right)
+(global-set-key (kbd "C-x <down>") #'windmove-down)
+(global-set-key (kbd "C-x <up>") #'windmove-up)
 
 (global-set-key [S-left] #'windmove-swap-states-left)
 (global-set-key [S-right] #'windmove-swap-states-right)
