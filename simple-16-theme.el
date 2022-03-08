@@ -138,23 +138,6 @@
 
  `(company-tooltip-scrollbar-thumb ((t :background ,(simple-16-theme-color blue))))
 
- ;; Ivy
- `(ivy-current-match ((t :inherit nil
-			 :background ,(simple-16-theme-color blue)
-			 :foreground nil)))
-
- `(ivy-minibuffer-match-face-1 ((t :inherit nil :background nil))) ;; Between matches
- ;; Ivy like lazy-highlight
- `(ivy-minibuffer-match-face-2 ((t :inherit lazy-highlight :weight ultra-bold)))
- `(ivy-minibuffer-match-face-3 ((t :inherit lazy-highlight :weight ultra-bold)))
- `(ivy-minibuffer-match-face-4 ((t :inherit lazy-highlight :weight ultra-bold)))
-
- ;; Swiper
- `(swiper-match-face-1 ((t :inherit nil)))
- `(swiper-match-face-2 ((t :inherit isearch)))
- `(swiper-match-face-3 ((t :inherit isearch)))
- `(swiper-match-face-4 ((t :inherit isearch)))
-
  ;; Avy
  `(avy-lead-face ((t :background ,(simple-16-theme-color blue)
 		     :foreground ,(simple-16-theme-color brightwhite))))
