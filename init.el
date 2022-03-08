@@ -16,6 +16,7 @@
 (set-keyboard-coding-system 'utf-8)
 
 (setq-default vc-follow-symlinks t	    ;; Open links not open
+	      vc-display-status nil
 	      ;;tab-always-indent complete  ;; make tab key do indent only
 	      ring-bell-function #'ignore
 	      user-full-name "Ergus"
