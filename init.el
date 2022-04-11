@@ -116,30 +116,40 @@
 ;; minibuffers
 
 ;; These two must be enabled/disabled together
-(setq-default enable-recursive-minibuffers t     ;; Enable nesting in minibuffer
+(setq-default ;; enable-recursive-minibuffers t     ;; Enable nesting in minibuffer
 	      completion-show-help nil           ;; Don't show help in completion buffer
 	      completion-auto-help 'lazy
 	      completion-auto-select t
 	      completion-wrap-movement t
 	      completions-detailed t             ;; show more detailed completions
 	      completions-format 'one-column     ;; Vertical completion list
+	      completions-max-height 15
+	      completion-styles '(substring partial-completion emacs22)
 	      ;; M-x show context-local commands
 	      read-extended-command-predicate #'command-completion-default-include-p
 	      read-file-name-completion-ignore-case t
 	      read-buffer-completion-ignore-case t
 	      completion-ignore-case t)
-(minibuffer-depth-indicate-mode 1)            ;; Mostrar nivel de nesting en minibuffer
+
+;; These two must be enabled/disabled together
+;; (setq-default enable-recursive-minibuffers t) ;; Enable nesting in minibuffer
+;; (minibuffer-depth-indicate-mode 1)            ;; Mostrar nivel de nesting en minibuffer
 
 ;; (setq minibuffer-eldef-shorten-default t)
 (add-hook 'minibuffer-setup-hook #'my/unset-gc)
 (add-hook 'minibuffer-exit-hook #'my/restore-gc)
 
-(add-to-list 'display-buffer-alist
-	     '("^\\*Completions\\*$" .
-	       (display-buffer-at-bottom (window-height . 10))))
+;; Arrows up/down search prefix in history like `history-search-backward' in bash
+(keymap-set minibuffer-local-map "<down>" #'next-complete-history-element)
+(keymap-set minibuffer-local-map "<up>" #'previous-complete-history-element)
 
-(add-hook 'completion-setup-hook (lambda ()
-				   (setq-local mode-line-format nil)))
+(defun my/completion-setup-hook ()
+  "My hook for Completions window."
+  (with-current-buffer standard-output
+    (setq-local mode-line-format nil)
+    (display-line-numbers-mode -1)))
+
+(add-hook 'completion-setup-hook #'my/completion-setup-hook 10)
 
 ;;__________________________________________________________
 ;; Config file not here to not track it
