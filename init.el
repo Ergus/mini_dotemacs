@@ -180,6 +180,9 @@
               mode-line-mule-info ""                               ;; no UUU: on the left.
               )
 
+;; Column in modeline
+(column-number-mode 1)
+
 ;; Line numbers and fill column
 (setq-default display-line-numbers-widen t)     ;; keep line numbers inside a narrow
 (global-display-line-numbers-mode t)            ;; line numbers on the left
