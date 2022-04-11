@@ -274,7 +274,8 @@
 ;; Isearch
 
 (setq-default search-nonincremental-instead nil    ;; No incremental if enter & empty
-	      lazy-highlight-initial-delay 0
+	      lazy-highlight-no-delay-length 1     ;; normal delay
+	      ;; lazy-highlight-initial-delay 0
 	      isearch-allow-scroll t 	           ;; Permit scroll can be 'unlimited
 	      isearch-lazy-count t
 	      search-ring-max 256
@@ -289,6 +290,7 @@
 	      ;; Emacs version > 28
 	      lazy-highlight-no-delay-length 1     ;; use this instead of lazy-highlight-initial-delay
 	      isearch-allow-motion t
+	      isearch-forward-thing-at-point '(region symbol sexp word)
 	      ;; isearch-motion-changes-direction t
 	      )
 
@@ -309,6 +311,7 @@
   (define-key isearch-mode-map (kbd "C-<return>") #'my/isearch-exit-other-end)
   (define-key isearch-mode-map [remap isearch-abort] #'isearch-cancel)
   (define-key isearch-mode-map [remap isearch-delete-char] #'isearch-del-char)
+  (define-key search-map "." #'isearch-forward-thing-at-point)
   )
 
 ;;__________________________________________________________
