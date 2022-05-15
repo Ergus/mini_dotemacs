@@ -93,6 +93,7 @@
 	      hide-ifdef-initially t
 
 	      help-window-select t                  ;; always select help windoes
+	      help-window-keep-selected t           ;; Reuse *help* buffer when available
 	      history-delete-duplicates t           ;; delete duplicates in commands history)
 
 	      find-library-include-other-files nil  ;; find-library only shows libraries, not random files.
@@ -317,12 +318,6 @@
 	      )
 
 (with-eval-after-load 'isearch
-  (when (< emacs-major-version 28)
-    ;; On emacs >= 28 isearch-allow-motion does this, so it is not needed.
-    (define-key isearch-mode-map (kbd "M-<") #'isearch-beginning-of-buffer)
-    (define-key isearch-mode-map (kbd "M->") #'isearch-end-of-buffer)
-    )
-
   (defun my/isearch-exit-other-end ()
     (interactive)
     (when isearch-other-end
@@ -333,8 +328,7 @@
   (define-key isearch-mode-map (kbd "C-<return>") #'my/isearch-exit-other-end)
   (define-key isearch-mode-map [remap isearch-abort] #'isearch-cancel)
   (define-key isearch-mode-map [remap isearch-delete-char] #'isearch-del-char)
-  (define-key search-map "." #'isearch-forward-thing-at-point)
-  )
+  (define-key search-map "." #'isearch-forward-thing-at-point))
 
 ;;__________________________________________________________
 ;; Occur
@@ -382,7 +376,7 @@
 	      tramp-completion-reread-directory-timeout 120  ;; default 10
 	      password-cache-expiry 3600                     ;; cache passwords for 1 hour
 	      tramp-use-scp-direct-remote-copying t          ;; copy directly between remote hosts
-	      tramp-verbose (if init-file-debug 10 0)        ;; Default 3 always
+	      tramp-verbose (if init-file-debug 10 3)        ;; Default 3 always
 	      ;; tramp-persistency-file-name "~/.emacs.d/tramp" ;; already default
 	      tramp-use-ssh-controlmaster-options nil
 	      tramp-completion-use-auth-sources nil          ;; no use auth
@@ -676,20 +670,17 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 	      dired-auto-revert-buffer t
 	      dired-listing-switches "-alh"
 	      dired-kill-when-opening-new-dired-buffer t ;; only works for emacs > 28
+	      dired-mouse-drag-files t
 	      dired-isearch-filenames 'dwim
-	      )
+	      dired-guess-shell-alist-user '(("\\.pdf\\'" "xdg-open")
+					     ("\\.jpe?g\\'" "xdg-open")
+					     ("\\.png\\'" "xdg-open")
+					     ("\\.gif\\'" "xdg-open")))
 
 (with-eval-after-load 'dired
   (require 'dired-x)
   (define-key dired-mode-map [mouse-2] #'dired-mouse-find-file)
-  (add-hook 'dired-mode-hook #'hl-line-mode)
-  (when (< emacs-major-version 28)
-    (put 'dired-find-alternate-file 'disabled nil)
-    (define-key dired-mode-map [remap dired-find-file] #'dired-find-alternate-file)  ; was dired-advertised-find-file
-    (define-key dired-mode-map [remap dired-up-directory] ; was dired-up-directory
-		(lambda nil
-		  (interactive)
-		  (find-alternate-file "..")))))
+  (add-hook 'dired-mode-hook #'hl-line-mode))
 
 (provide 'init)
 ;;; init.el ends here
