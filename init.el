@@ -141,8 +141,8 @@
 (add-hook 'minibuffer-exit-hook #'my/restore-gc)
 
 ;; Arrows up/down search prefix in history like `history-search-backward' in bash
-(keymap-set minibuffer-local-map "<down>" #'next-complete-history-element)
-(keymap-set minibuffer-local-map "<up>" #'previous-complete-history-element)
+(define-key minibuffer-local-map [down] #'next-complete-history-element)
+(define-key minibuffer-local-map [up] #'previous-complete-history-element)
 
 (defun my/completion-setup-hook ()
   "My hook for Completions window."
@@ -285,7 +285,8 @@
 			     (recentf-cleanup)))
 
 ;; Use cycle-spacing instead of just-one-space on M-SPC
-(global-set-key [remap just-one-space] #'cycle-spacing)
+(when (version< emacs-version "29")
+  (global-set-key [remap just-one-space] #'cycle-spacing))
 (global-set-key [remap delete-char] #'delete-forward-char)
 (global-set-key [remap count-words-region] #'count-words)  ;; count on whole file or region if active
 
@@ -324,7 +325,6 @@
       (goto-char isearch-other-end))
     (call-interactively #'isearch-exit))
 
-  (define-key isearch-mode-map (kbd "C-RET") #'my/isearch-exit-other-end)
   (define-key isearch-mode-map (kbd "C-<return>") #'my/isearch-exit-other-end)
   (define-key isearch-mode-map [remap isearch-abort] #'isearch-cancel)
   (define-key isearch-mode-map [remap isearch-delete-char] #'isearch-del-char)
@@ -336,7 +336,7 @@
 
 (with-eval-after-load 'replace  ;; is where occur resides
   ;; With error follow this is pointless.
-  (keymap-set occur-mode-map "SPC" #'occur-mode-display-occurrence)
+  (define-key occur-mode-map (kbd "SPC") #'occur-mode-display-occurrence)
   (add-hook 'occur-hook (lambda ()
 			  (beginning-of-line)
 			  (recenter nil t)))
@@ -431,8 +431,8 @@
       (mouse-wheel-mode 1))                    ;; Explicit call mouse-wheel-mode AFTER setting mouse-wheel-scroll-amount
 
   ;; Else set them manually, will be overridden latter.
-  (keymap-global-set "<mouse-4>" #'scroll-down-command)
-  (keymap-global-set "<mouse-5>" #'scroll-up-command))
+  (global-set-key [mouse-4] #'scroll-down-command)
+  (global-set-key [mouse-5] #'scroll-up-command))
 
 (global-set-key [remap scroll-up-command] #'scroll-up-line)
 (global-set-key [remap scroll-down-command] #'scroll-down-line)
