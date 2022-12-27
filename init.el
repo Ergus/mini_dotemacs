@@ -594,15 +594,15 @@ non-nil and probably assumes that `c-basic-offset' is the same as
 
 (global-set-key (kbd "C-x 0") ctl-x-0-map)
 
-(global-set-key (kbd "C-x <left>") #'windmove-left)
-(global-set-key (kbd "C-x <right>") #'windmove-right)
-(global-set-key (kbd "C-x <down>") #'windmove-down)
-(global-set-key (kbd "C-x <up>") #'windmove-up)
+(define-key ctl-x-map [left] #'windmove-left)
+(define-key ctl-x-map [right] #'windmove-right)
+(define-key ctl-x-map [down] #'windmove-down)
+(define-key ctl-x-map [up] #'windmove-up)
 
-(global-set-key [S-left] #'windmove-swap-states-left)
-(global-set-key [S-right] #'windmove-swap-states-right)
-(global-set-key [S-down] #'windmove-swap-states-down)
-(global-set-key [S-up] #'windmove-swap-states-up)
+(define-key ctl-x-map [S-left] #'windmove-swap-states-left)
+(define-key ctl-x-map [S-right] #'windmove-swap-states-right)
+(define-key ctl-x-map [S-down] #'windmove-swap-states-down)
+(define-key ctl-x-map [S-up] #'windmove-swap-states-up)
 
 (define-key ctl-x-4-map [left] #'windmove-display-left)
 (define-key ctl-x-4-map [right] #'windmove-display-right)
