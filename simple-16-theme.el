@@ -58,15 +58,21 @@
  `(font-lock-string-face ((t :foreground ,(simple-16-theme-color red))))
  `(font-lock-type-face ((t :foreground ,(simple-16-theme-color green))))
  `(font-lock-variable-name-face ((t :foreground ,(simple-16-theme-color white))))
+ ;; New ts faces
+ `(font-lock-function-call-face ((t :foreground ,(simple-16-theme-color magenta))))
+ `(font-lock-number-face ((t :foreground ,(simple-16-theme-color red))))
+ `(font-lock-variable-name-face ((t :foreground ,(simple-16-theme-color green))))
+ `(font-lock-variable-use-face ((t :foreground ,(simple-16-theme-color cyan))))
+ `(font-lock-property-name-face ((t :foreground ,(simple-16-theme-color green))))
 
- `(highlight ((default :background ,(simple-16-theme-color blue) :foreground nil)
+ `(highlight ((default :background ,(simple-16-theme-color blue) :foreground unspecified)
 	      (((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblack))))
 
- `(secondary-selection ((t :background ,(simple-16-theme-color blue) :foreground nil)
+ `(secondary-selection ((t :background ,(simple-16-theme-color blue) :foreground unspecified)
 			(((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblack))))
 
  `(isearch ((t :background ,(simple-16-theme-color blue)
-	       :foreground nil
+	       :foreground unspecified
 	       :weight ultrabold)))
 
  `(lazy-highlight ((default :background ,(simple-16-theme-color cyan))
@@ -74,7 +80,7 @@
 
  `(region ((default :background ,(simple-16-theme-color blue)
 		    :foreground ,(simple-16-theme-color white))
-	   (((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblue) :foreground nil)))
+	   (((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblue) :foreground unspecified)))
 
  `(trailing-whitespace ((default :background ,(simple-16-theme-color cyan))
 			(((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblack))))
@@ -119,7 +125,7 @@
  `(Man-overstrike ((t :inherit font-lock-type-face :bold t)))
  `(Man-underline ((t :inherit font-lock-keyword-face :underline t)))
 
- `(which-func ((t :background nil :foreground ,(simple-16-theme-color white))))
+ `(which-func ((t :background unspecified :foreground ,(simple-16-theme-color white))))
 
  `(dired-directory ((t :foreground ,(simple-16-theme-color cyan))))
 
@@ -143,10 +149,10 @@
 		     :foreground ,(simple-16-theme-color brightwhite))))
 
  ;; Flycheck
- `(flycheck-error ((t :inherit nil :background nil :foreground nil :underline t)))
+ `(flycheck-error ((t :inherit nil :background unspecified :foreground unspecified :underline t)))
 
  ;; Flymake
- `(flymake-error ((t :inherit nil :background nil :foreground nil :underline t)))
+ `(flymake-error ((t :inherit nil :background unspecified :foreground unspecified :underline t)))
 
  ;; highlight-escape-sequences
  `(hes-escape-backslash-face ((t :inherit font-lock-regexp-grouping-backslash
