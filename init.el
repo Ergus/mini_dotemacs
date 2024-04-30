@@ -774,7 +774,7 @@ M-<left>' and repeat with M-<left>."
 ;; There is a tree-sitter module for this, I will try that
 
 (setq-default python-shell-interpreter "ipython"
-              python-shell-interpreter-args "-i --simple-prompt"
+              python-shell-interpreter-args "--simple-prompt"
 	      ;;python-shell-prompt-detect-failure-warning nil
 	      python-check-command "pyflakes"
 	      flycheck-python-flake8-executable "flake8")
@@ -809,7 +809,9 @@ M-<left>' and repeat with M-<left>."
 
 ;;__________________________________________________________
 ;; ibuffer
-(setq-default ibuffer-default-sorting-mode 'alphabetic)  ;; can use recency)
+(setq-default ibuffer-default-sorting-mode 'alphabetic  ;; can use recency)
+	      ibuffer-use-other-window t
+	      ibuffer-jump-offer-only-visible-buffers t)
 (keymap-global-set "<remap> <list-buffers>" #'ibuffer)
 (add-hook 'ibuffer-mode-hook #'hl-line-mode)
 
