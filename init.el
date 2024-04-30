@@ -98,7 +98,6 @@
 	      bookmark-save-flag 1                    ;; Save bookmarks immediately when added
 
 	      register-use-preview t                  ;; newer interface to show registers
-	      eshell-history-append t                 ;; No override eshell history; append
 	      idle-update-delay 0.25                  ;; idle to update screen
 
 	      ;; translate-upper-case-key-bindings nil ;; Make keybindings case sensitive (inhibit binding translation)
@@ -569,6 +568,24 @@ M-<left>' and repeat with M-<left>."
 				  (split-window-vertically arg))))
 (with-eval-after-load 'winner
   (add-hook 'ediff-after-quit-hook-internal #'winner-undo))
+
+;;__________________________________________________________
+;; eshell mouse
+
+(defun my/eshell-prompt-function ()
+  "Personalized Eshell prompt."
+  (concat
+   (with-face (concat (user-login-name) "@" (system-name))
+	      :foreground (simple-16-theme-color green))
+   (with-face (concat ":" (abbreviate-file-name (eshell/pwd)))
+	      :foreground (simple-16-theme-color blue))
+   (if (= (file-user-uid) 0) " #" " $")
+   `,(with-face "\n>" :foreground (simple-16-theme-color cyan))
+   " "))
+
+(setq-default eshell-history-append t   ;; No override eshell history; append
+	      eshell-prompt-function #'my/eshell-prompt-function
+	      eshell-highlight-prompt nil)
 
 ;;__________________________________________________________
 ;; xterm mouse
