@@ -251,19 +251,6 @@ M-<left>' and repeat with M-<left>."
 (keymap-global-set "M-s h L" #'hl-line-mode)
 (add-hook 'package-menu-mode-hook #'hl-line-mode)
 
-;; hilit-chg changes
-(defvar-keymap highlight-changes-map
-  :doc "The base keymap for `highlight changes'."
-  "c" #'highlight-changes-mode
-  "v" #'highlight-changes-visible-mode
-  "r" #'highlight-changes-remove-highlight
-  "n" #'highlight-changes-next-change
-  "p" #'highlight-changes-previous-change
-  "f" #'highlight-changes-rotate-faces
-  "b" #'highlight-compare-buffers
-  "d" #'highlight-compare-with-file)
-(keymap-global-set "M-s h c" (cons "highlight-changes" highlight-changes-map))
-
 ;; winner
 (setq-default winner-dont-bind-my-keys t)
 (winner-mode t)
@@ -568,7 +555,7 @@ M-<left>' and repeat with M-<left>."
   "S-<down>" #'windmove-swap-states-down
   "S-<up>" #'windmove-swap-states-up)
 
-;; C-z C-z provides a similar behavior to my tmux config
+;; C-z provides a similar behavior to my tmux config
 (keymap-global-set "C-z" my/tmux-like-keymap)
 
 ;;__________________________________________________________
@@ -674,31 +661,19 @@ M-<left>' and repeat with M-<left>."
 	      t eglot-ignored-server-capabilities
 	      '(:inlayHintProvider :documentRangeFormattingProvider
 				   :documentOnTypeFormattingProvider))
-(eval-after-load 'eglot
-  '(progn
-     (add-to-list 'eglot-server-programs '((cuda-mode) "clangd"))
-     (add-hook 'eglot-managed-mode-hook
-	       (lambda nil
-		 (when (eldoc--supported-p)
-		   (eldoc-mode (if (eglot-managed-p) 1 -1)))))
-     t))
-
-;; Completion preview mode
-(when (fboundp 'completion-preview-mode)
-  (add-hook 'prog-mode-hook #'completion-preview-mode)
-  (add-hook 'text-mode-hook #'completion-preview-mode)
-  (add-hook 'conf-mode-hook #'completion-preview-mode)
-  (add-hook 'message-mode-hook #'completion-preview-mode)
-  (add-hook 'shell-mode-hook #'completion-preview-mode)
-  (add-hook 'eshell-mode-hook #'completion-preview-mode)
-  (add-hook 'vterm-mode-hook #'completion-preview-mode))
-
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs '((cuda-mode) "clangd"))
+  (add-hook 'eglot-managed-mode-hook
+	    (lambda nil
+	      (when (eldoc--supported-p)
+		(eldoc-mode (if (eglot-managed-p) 1 -1))))))
 
 ;;====================
 ;; cc-mode
 (setq-default c-default-style '((java-mode . "java")
 				(awk-mode . "awk")
-				(other . "linux")))
+				(other . "linux"))
+	      c-doc-comment-style 'doxygen)
 
 (with-eval-after-load 'cc-mode
   (defun my/c-mode-common-hook ()
