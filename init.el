@@ -318,7 +318,7 @@ M-<left>' and repeat with M-<left>."
 	      completion-ignore-case t
 
 	      completion-auto-deselect t            ;; De-select completions on write
-	      completions-sort 'historical          ;; alphabetical + historical
+	      ;;completions-sort 'historical          ;; alphabetical + historical (needs emacs 29)
 	      )
 
 ;; project
