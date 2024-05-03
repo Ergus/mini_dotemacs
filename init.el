@@ -113,7 +113,8 @@
 	      debugger-stack-frame-as-list t        ;; display call stack frames as lists.
 	      async-shell-command-display-buffer nil ;;command buffer wait until there is output
 	      shell-kill-buffer-on-exit t
-	      large-file-warning-threshold nil
+	      ;;large-file-warning-threshold nil
+	      proced-enable-color-flag t            ;; colors in proced
 	      )
 
 ;; Vertical window divider
@@ -847,10 +848,12 @@ M-<left>' and repeat with M-<left>."
 
 (defun my/enable-smerge-maybe ()
   "Auto-enable `smerge-mode' when merge conflict is detected."
-  (save-excursion
-    (goto-char (point-min))
-    (when (re-search-forward "^<<<<<<< " nil t)
-      (smerge-mode 1))))
+  (when (or (not large-file-warning-threshold)
+	    (< (buffer-size) large-file-warning-threshold))
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward "^<<<<<<< " nil t)
+	(smerge-mode 1)))))
 
 (with-eval-after-load 'smerge-mode
   (my/repeat-keymap smerge-repeat-map smerge-basic-map
