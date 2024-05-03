@@ -126,24 +126,22 @@
 (setq-default package-native-compile t
 	      package-quickstart t)
 
-(defmacro my/repeat-keymap (keymap-name keymap &rest defs)
-  "Generate a keymap as repeat-map and then add it to a another keymap.
+(defmacro my/repeat-keymap (newkeymap keymap &rest defs)
+  "Generate a NEWKEYMAP and then add it to a another KEYMAP.
 
 This is inteded to add the same bindings to a keymap like `C-x
 M-<left>' and repeat with M-<left>."
   (declare (indent 2))
   `(progn
-     ;; This also takes care of an even number of arguments
-     (defvar-keymap ,keymap-name ,@defs)
-     ,@(let ((sets) (puts) (key) (val))
-	 (while defs
-	   (setq key (pop defs)
-		 val (pop defs))
-
+     (defvar-keymap ,newkeymap :repeat t ,@defs)
+     ;; Add the keys with same suffix to `keymap'
+     ,@(let ((sets))
+	 (while-let ((key (car defs))
+		     (value (cadr defs)))
 	   (unless (eq key :doc)
-	     (push `(keymap-set ,keymap ,key ,val) sets)
-	     (push `(put ,val 'repeat-map ',keymap-name) puts)))
-	 (append sets puts))))
+	     (push `(keymap-set ,keymap ,key ,value) sets))
+	   (setq defs (cddr defs)))
+	 (nreverse sets))))
 
 (if init-file-debug
     (setq-default debug-on-error t
