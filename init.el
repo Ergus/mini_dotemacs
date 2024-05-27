@@ -449,7 +449,8 @@ M-<left>' and repeat with M-<left>."
 
 ;;__________________________________________________________
 ;; compile
-(setq-default compilation-scroll-output 'first-error
+(setq-default compilation-scroll-output nil
+	      compilation-context-lines t
 	      compilation-always-kill t)
 
 ;;; Display compilation buffer at buttom
