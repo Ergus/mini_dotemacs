@@ -48,6 +48,10 @@
  `(default ((t :background ,(simple-16-theme-color black)
                :foreground ,(simple-16-theme-color white))))
 
+ `(shadow ((t :background ,(simple-16-theme-color black)
+              :foreground ,(simple-16-theme-color brightblack))))
+ `(error ((t :foreground ,(simple-16-theme-color brightred))))
+
  `(font-lock-builtin-face ((t :foreground ,(simple-16-theme-color green))))
  `(font-lock-comment-face ((t :foreground ,(simple-16-theme-color blue))))
  `(font-lock-constant-face ((t :foreground ,(simple-16-theme-color magenta))))
@@ -84,6 +88,8 @@
 
  `(trailing-whitespace ((default :background ,(simple-16-theme-color cyan))
 			(((class color) (min-colors 16)) :background ,(simple-16-theme-color brightblack))))
+
+ `(whitespace-tab ((t :background unspecified :foreground ,(simple-16-theme-color brightblack))))
 
  ;; Modeline
  `(mode-line ((t :background ,(simple-16-theme-color blue)
@@ -129,6 +135,8 @@
 
  `(dired-directory ((t :foreground ,(simple-16-theme-color cyan))))
 
+ ;;`(tooltip ((t :background ,(simple-16-theme-color brightblack) :foreground ,(simple-16-theme-color white))))
+ 
  ;; External packages
  ;; Company
  `(company-tooltip ((default :background ,(simple-16-theme-color blue)
@@ -152,7 +160,11 @@
  `(flycheck-error ((t :inherit nil :background unspecified :foreground unspecified :underline t)))
 
  ;; Flymake
- `(flymake-error ((t :inherit nil :background unspecified :foreground unspecified :underline t)))
+ ;; Error in line
+ `(flymake-end-of-line-diagnostics-face ((t :inherit shadow :slant italic))) ;; make it less annoying
+
+ `(eshell-prompt ((t :weight bold :background unspecified
+		     :foreground ,(simple-16-theme-color brightblack))))
 
  ;; highlight-escape-sequences
  `(hes-escape-backslash-face ((t :inherit font-lock-regexp-grouping-backslash
@@ -165,6 +177,25 @@
  `(mu4e-trashed-face ((t :inherit nil :foreground ,(simple-16-theme-color red))))
  ;;`(mu4e-replied-face ((t (:inherit nil :foreground ,(simple-16-theme-color blue)))))
  `(mu4e-header-highlight-face ((t :inherit hl-line :weight bold :underline nil)))
+
+ ;; eglot
+ ;; hints inline
+ `(eglot-inlay-hint-face ((t :inherit shadow :weight ultra-light :slant italic)))
+ `(eglot-diagnostic-tag-unnecessary-face ((t :inherit nil :background unspecified :foreground unspecified :underline t)))
+ `(eglot-diagnostic-tag-deprecated-face ((t :inherit nil :background unspecified :foreground unspecified :underline t :strike-through t)))
+
+ ;; tty menu
+ `(tty-menu-enabled-face ((t :inherit nil
+			     :foreground ,(simple-16-theme-color black)
+			     :background ,(simple-16-theme-color white)
+			     :weight bold)))
+ `(tty-menu-disabled-face ((t :inherit tty-menu-enabled-face
+			      :foreground ,(simple-16-theme-color brightblack)
+			      :weight ultra-light)))
+ 
+ `(tty-menu-selected-face ((t :inherit tty-menu-enabled-face
+			      :background ,(simple-16-theme-color cyan))))
+
  )
 
 (provide-theme 'simple-16)
