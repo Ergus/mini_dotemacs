@@ -1,4 +1,4 @@
-;;; early-init.el --- Emacs 27 early init file
+;;; early-init.el --- Emacs 27 early init file  -*- lexical-binding: t; -*-
 ;; Copyright (C) 2019 Jimmy Aguilar Mena
 
 ;; Author: Jimmy Aguilar Mena
